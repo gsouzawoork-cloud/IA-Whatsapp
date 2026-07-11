@@ -24,17 +24,12 @@ export function AddressEditor({ order }: { order: Order }) {
   const editable = order.status === "draft";
   const [open, setOpen] = useState(!order.address);
   const [form, setForm] = useState<OrderAddress>(
-    order.address ?? {
-      street: "",
-      number: "",
-      district: "",
-      city: "",
-    },
+    order.address ?? { street: "", number: "", district: "", city: "" },
   );
 
   if (!editable) {
     return (
-      <p className="text-sm text-neutral-200">
+      <p className="text-sm text-mid">
         {order.address
           ? `${order.address.street}, ${order.address.number} — ${order.address.district}, ${order.address.city}`
           : "Sem endereço."}
@@ -47,8 +42,8 @@ export function AddressEditor({ order }: { order: Order }) {
   return (
     <div className="space-y-2">
       {order.address && !open ? (
-        <div className="flex items-start justify-between gap-2">
-          <p className="text-sm text-neutral-200">
+        <div className="flex items-start justify-between gap-2 rounded-lg border border-line bg-white/[0.02] px-3 py-2">
+          <p className="text-sm text-mid">
             {order.address.street}, {order.address.number}
             {order.address.complement ? ` (${order.address.complement})` : ""} —{" "}
             {order.address.district}, {order.address.city}
@@ -74,7 +69,7 @@ export function AddressEditor({ order }: { order: Order }) {
               key={field.key}
               className={field.key === "street" || field.key === "reference" ? "col-span-2" : ""}
             >
-              <span className="text-[11px] text-neutral-500">
+              <span className="text-[11px] text-low">
                 {field.label}
                 {field.required ? " *" : ""}
               </span>
@@ -84,7 +79,7 @@ export function AddressEditor({ order }: { order: Order }) {
                 onChange={(event) =>
                   setForm((current) => ({ ...current, [field.key]: event.target.value }))
                 }
-                className="mt-0.5 w-full rounded-md border border-neutral-800 bg-neutral-900 px-2.5 py-1.5 text-sm text-neutral-100 focus:border-emerald-500/50 focus:outline-none"
+                className="mt-0.5 w-full rounded-lg border border-line bg-black/20 px-2.5 py-1.5 text-sm text-hi focus:border-accent/50 focus:outline-none"
               />
             </label>
           ))}

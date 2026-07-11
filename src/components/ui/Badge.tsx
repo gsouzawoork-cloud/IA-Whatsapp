@@ -10,26 +10,43 @@ export type BadgeTone =
   | "info";
 
 const TONE_CLASSES: Readonly<Record<BadgeTone, string>> = {
-  neutral: "border-neutral-700 bg-neutral-800/60 text-neutral-300",
-  accent: "border-emerald-500/40 bg-emerald-500/10 text-emerald-300",
-  success: "border-emerald-500/40 bg-emerald-500/10 text-emerald-300",
-  warning: "border-amber-500/40 bg-amber-500/10 text-amber-300",
-  danger: "border-red-500/40 bg-red-500/10 text-red-300",
-  info: "border-sky-500/40 bg-sky-500/10 text-sky-300",
+  neutral: "border-line bg-white/[0.04] text-mid",
+  accent: "border-accent/30 bg-accent-soft text-accent",
+  success: "border-ok/30 bg-ok/10 text-ok",
+  warning: "border-warn/30 bg-warn/10 text-warn",
+  danger: "border-bad/30 bg-bad/10 text-bad",
+  info: "border-info/30 bg-info/10 text-info",
 };
 
-/** Selo compacto com tom semântico. Não depende apenas da cor: sempre traz texto. */
+const DOT_CLASSES: Readonly<Record<BadgeTone, string>> = {
+  neutral: "bg-low",
+  accent: "bg-accent",
+  success: "bg-ok",
+  warning: "bg-warn",
+  danger: "bg-bad",
+  info: "bg-info",
+};
+
+/**
+ * Selo compacto com tom semântico. Um ponto colorido acompanha o texto para não
+ * depender apenas da cor (acessibilidade).
+ */
 export function Badge({
   tone = "neutral",
+  dot = false,
   children,
 }: {
   tone?: BadgeTone;
+  dot?: boolean;
   children: ReactNode;
 }) {
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium ${TONE_CLASSES[tone]}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs font-semibold ${TONE_CLASSES[tone]}`}
     >
+      {dot ? (
+        <span className={`h-1.5 w-1.5 rounded-full ${DOT_CLASSES[tone]}`} aria-hidden />
+      ) : null}
       {children}
     </span>
   );

@@ -177,3 +177,38 @@ Status.
 - **Consequências:** a demonstração roda no cliente; a Fase 2 substituirá o estado em
   memória por persistência real com isolamento multiempresa.
 - **Status:** aceita.
+
+## ADR-016 — Redesign visual premium da central operacional (Fase 1)
+
+- **Contexto:** a interface funcional da Fase 1 estava chapada, com pouca
+  profundidade e hierarquia fraca — parecia uma ferramenta interna, não uma
+  plataforma SaaS premium. Refatoração puramente visual, sem alterar lógica.
+- **Direção visual:** central operacional escura, tecnológica e tridimensional;
+  profundidade por camadas e contraste, não por sombras pesadas uniformes.
+- **Sistema de tokens (`globals.css`, Tailwind v4 `@theme`):** superfícies em quatro
+  níveis (`app` → `surface-1/2/3` → `surface-active`), bordas graduadas
+  (`subtle`/`line`/`strong`), texto hierárquico (`hi`/`mid`/`low`/`dim`), acento
+  verde-azulado seletivo (`accent`) e semânticos (`ok`/`warn`/`bad`/`info`).
+  Substitui hexadecimais espalhados por utilitários (`bg-surface-2`, `text-mid`, …).
+- **Profundidade/elevação:** sombras multicamada em três níveis
+  (`--shadow-low/medium/high`) expostas como `.elev-low/medium/high`; painéis
+  `.panel` (Nível 2) e `.panel-priority` (Nível 3, com luz interna) para elementos
+  prioritários; canvas `.app-canvas` com iluminação radial discreta. Sem glow global.
+- **Tipografia:** Manrope (variável) via `next/font/google` — auto-hospedada no
+  build, **sem arquivos de fonte no repositório** e sem requisição em runtime;
+  exposta como `--font-manrope` e consumida pelo token `--font-sans`. Escala de
+  pesos fortes com `tabular-nums` para números/KPIs (`.t-page-title`, `.t-kpi`, …).
+- **Identidade dupla:** marca da plataforma (`PlatformBrand` — "Central IA") separada
+  da empresa conectada (cápsula da Pizzaria Forno Alto) na sidebar.
+- **Responsividade:** grid de três áreas no atendimento (desktop), drawer de contexto
+  no mobile; tabelas com container de rolagem próprio; navegação inferior no celular.
+- **Microinterações:** hover elevando 1–2px, transições de 150–200ms, entradas de
+  drawer/overlay por keyframes CSS; `prefers-reduced-motion` encurta todas as durações.
+- **Acessibilidade:** foco visível baseado no acento, selos com ponto além da cor,
+  switches/tabs como botões reais, drawers com `aria-modal`/foco, alvos de toque
+  adequados; contraste elevado sobre o fundo escuro.
+- **Dependências:** adicionada `next/font` (Manrope, sem custo de runtime); `lucide-react`
+  reutilizada. Nenhuma biblioteca de UI, animação, gráficos ou tabelas foi adicionada.
+- **Preservação:** rotas, estado, reducers, seletores, regras de domínio, dados
+  simulados e os 50 testes permanecem intactos — nenhuma lógica foi alterada.
+- **Status:** aceita.

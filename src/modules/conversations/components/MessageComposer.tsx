@@ -1,17 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { Send } from "lucide-react";
+import { Bot, Send, UserCheck } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useDemo } from "@/modules/demo/state/DemoProvider";
 
-/** Caixa de envio de mensagem manual (atendente). */
+/** Caixa de envio de mensagem manual (atendente), com indicador do modo da IA. */
 export function MessageComposer({
   conversationId,
   disabled = false,
+  aiActive = false,
 }: {
   conversationId: string;
   disabled?: boolean;
+  aiActive?: boolean;
 }) {
   const { actions } = useDemo();
   const [value, setValue] = useState("");
@@ -26,36 +28,51 @@ export function MessageComposer({
   }
 
   return (
-    <form
-      className="flex items-end gap-2 border-t border-neutral-800 p-3"
-      onSubmit={(event) => {
-        event.preventDefault();
-        submit();
-      }}
-    >
-      <label className="flex-1">
-        <span className="sr-only">Mensagem</span>
-        <textarea
-          value={value}
-          disabled={disabled}
-          onChange={(event) => setValue(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter" && !event.shiftKey) {
-              event.preventDefault();
-              submit();
-            }
-          }}
-          rows={1}
-          placeholder={
-            disabled ? "Conversa encerrada" : "Escreva uma mensagem manual…"
-          }
-          className="max-h-32 w-full resize-none rounded-md border border-neutral-800 bg-neutral-900 px-3 py-2 text-sm text-neutral-100 placeholder:text-neutral-500 focus:border-emerald-500/50 focus:outline-none focus:ring-1 focus:ring-emerald-500/40 disabled:opacity-50"
-        />
-      </label>
-      <Button type="submit" variant="primary" disabled={disabled || !value.trim()}>
-        <Send className="h-4 w-4" aria-hidden />
-        <span className="sr-only sm:not-sr-only">Enviar</span>
-      </Button>
-    </form>
+    <div className="border-t border-subtle bg-surface-1/50 p-3">
+      {!disabled ? (
+        <p className="mb-2 flex items-center gap-1.5 px-1 text-[11px] text-low">
+          {aiActive ? (
+            <>
+              <Bot className="h-3 w-3 text-accent" aria-hidden />
+              IA ativa nesta conversa — enviar manualmente registra sua intervenção.
+            </>
+          ) : (
+            <>
+              <UserCheck className="h-3 w-3 text-info" aria-hidden />
+              Atendimento manual — a IA está pausada.
+            </>
+          )}
+        </p>
+      ) : null}
+      <form
+        className="flex items-end gap-2"
+        onSubmit={(event) => {
+          event.preventDefault();
+          submit();
+        }}
+      >
+        <label className="flex-1">
+          <span className="sr-only">Mensagem</span>
+          <textarea
+            value={value}
+            disabled={disabled}
+            onChange={(event) => setValue(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                submit();
+              }
+            }}
+            rows={1}
+            placeholder={disabled ? "Conversa encerrada" : "Escreva uma mensagem manual…"}
+            className="max-h-32 w-full resize-none rounded-xl border border-line bg-black/20 px-3.5 py-2.5 text-sm text-hi shadow-inner placeholder:text-low focus:border-accent/50 focus:bg-black/30 focus:outline-none focus:ring-1 focus:ring-accent/40 disabled:opacity-50"
+          />
+        </label>
+        <Button type="submit" variant="primary" disabled={disabled || !value.trim()}>
+          <Send className="h-4 w-4" aria-hidden />
+          <span className="sr-only sm:not-sr-only">Enviar</span>
+        </Button>
+      </form>
+    </div>
   );
 }

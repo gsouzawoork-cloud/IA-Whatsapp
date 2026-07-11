@@ -55,6 +55,21 @@ export function formatDateTime(iso: string): string {
   return DATE_TIME.format(new Date(iso));
 }
 
+const DAY_LABEL = new Intl.DateTimeFormat("pt-BR", {
+  day: "2-digit",
+  month: "long",
+});
+
+/** Rótulo de dia para separadores de conversa (ex.: "11 de julho"). */
+export function formatDayLabel(iso: string): string {
+  return DAY_LABEL.format(new Date(iso));
+}
+
+/** Chave de dia (YYYY-MM-DD) para agrupar mensagens. */
+export function dayKey(iso: string): string {
+  return iso.slice(0, 10);
+}
+
 /**
  * Descreve o tempo decorrido desde `iso` até `now` de forma amigável.
  * Usado apenas para exibição operacional (não é uma regra de domínio).
@@ -75,6 +90,14 @@ export function formatElapsed(iso: string, now: number = Date.now()): string {
   }
   const days = Math.floor(hours / 24);
   return `${days} d`;
+}
+
+/**
+ * Minutos decorridos desde `iso`. O relógio fica isolado aqui (parâmetro com
+ * default), mantendo os componentes puros.
+ */
+export function elapsedMinutes(iso: string, now: number = Date.now()): number {
+  return (now - new Date(iso).getTime()) / 60000;
 }
 
 /** Formata minutos como duração legível (ex.: 75 → "1 h 15 min"). */

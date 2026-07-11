@@ -1,21 +1,217 @@
 @import "tailwindcss";
 
-:root {
-  color-scheme: light dark;
+/*
+ * Sistema visual da plataforma (redesign premium).
+ * Tokens centralizados: superfícies em camadas, bordas graduadas, texto
+ * hierárquico, acento seletivo, sombras multicamada e escala tipográfica.
+ */
+@theme {
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Superfícies (Nível 0 → 3) */
+  --color-app: #090b0c;
+  --color-raised: #0d1011;
+  --color-surface-1: #121618;
+  --color-surface-2: #171b1e;
+  --color-surface-3: #1e2429;
+  --color-surface-active: #232b30;
+
+  /* Bordas (use como border-*) */
+  --color-subtle: rgba(255, 255, 255, 0.05);
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-strong: rgba(255, 255, 255, 0.14);
+
+  /* Texto */
+  --color-hi: #eef2f1;
+  --color-mid: #adb7b5;
+  --color-low: #7b8583;
+  --color-dim: #525b59;
+
+  /* Acento (verde-azulado, uso seletivo) */
+  --color-accent: #3ddc97;
+  --color-accent-hi: #58e7a9;
+  --color-accent-soft: rgba(61, 220, 151, 0.12);
+
+  /* Estados semânticos */
+  --color-ok: #34d399;
+  --color-warn: #f6c344;
+  --color-bad: #f4726b;
+  --color-info: #63a4f4;
 }
 
-@theme inline {
-  --font-sans:
-    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
+:root {
+  color-scheme: light dark;
+
+  --shadow-low: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 1px rgba(0, 0, 0, 0.2);
+  --shadow-medium: 0 10px 30px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.045);
+  --shadow-high: 0 24px 60px rgba(0, 0, 0, 0.42), 0 6px 18px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 html {
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 /* Foco sempre visível para navegação por teclado. */
 :focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@layer utilities {
+  /* Elevação seletiva */
+  .elev-low {
+    box-shadow: var(--shadow-low);
+  }
+  .elev-medium {
+    box-shadow: var(--shadow-medium);
+  }
+  .elev-high {
+    box-shadow: var(--shadow-high);
+  }
+
+  /* Canvas de fundo da aplicação: grafite quase preto + luz radial discreta */
+  .app-canvas {
+    background:
+      radial-gradient(
+        900px circle at 12% -8%,
+        rgba(61, 220, 151, 0.05),
+        transparent 42%
+      ),
+      radial-gradient(
+        700px circle at 100% 0%,
+        rgba(99, 164, 244, 0.035),
+        transparent 38%
+      ),
+      var(--color-app);
+  }
+
+  /* Painel elevado (Nível 2) com luz superior sutil */
+  .panel {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.025),
+        rgba(255, 255, 255, 0) 55%
+      ),
+      var(--color-surface-2);
+    border: 1px solid var(--color-line);
+    border-radius: 14px;
+  }
+
+  /* Elemento prioritário (Nível 3): mais claro, elevado, com brilho interno */
+  .panel-priority {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.045),
+        rgba(255, 255, 255, 0.01) 60%
+      ),
+      var(--color-surface-3);
+    border: 1px solid var(--color-strong);
+    box-shadow: var(--shadow-high);
+  }
+
+  /* Barra de rolagem discreta para áreas operacionais */
+  .scroll-slim {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  }
+  .scroll-slim::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  .scroll-slim::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.09);
+    border-radius: 9px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  .scroll-slim::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.16);
+    background-clip: padding-box;
+  }
+
+  /* Escala tipográfica (pesos fortes via Manrope variável) */
+  .t-page-title {
+    font-weight: 800;
+    letter-spacing: -0.022em;
+    line-height: 1.08;
+    color: var(--color-hi);
+  }
+  .t-section {
+    font-weight: 700;
+    letter-spacing: -0.012em;
+    color: var(--color-hi);
+  }
+  .t-kpi {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-hi);
+    line-height: 1;
+  }
+  .t-eyebrow {
+    font-weight: 650;
+    letter-spacing: 0.02em;
+    color: var(--color-low);
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Entradas discretas (drawer, overlay) — respeitam reduced-motion. */
+  .animate-fade-in {
+    animation: fade-in 180ms ease-out;
+  }
+  .animate-drawer-in {
+    animation: drawer-in 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .animate-pop-in {
+    animation: pop-in 160ms ease-out;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes drawer-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

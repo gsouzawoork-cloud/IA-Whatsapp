@@ -11,9 +11,9 @@ export interface ToastItem {
 }
 
 const KIND_STYLES: Readonly<Record<FeedbackKind, string>> = {
-  success: "border-emerald-500/40 bg-emerald-500/10 text-emerald-200",
-  error: "border-red-500/40 bg-red-500/10 text-red-200",
-  info: "border-sky-500/40 bg-sky-500/10 text-sky-200",
+  success: "border-ok/40 text-ok",
+  error: "border-bad/40 text-bad",
+  info: "border-info/40 text-info",
 };
 
 function ToastIcon({ kind }: { kind: FeedbackKind }) {
@@ -37,7 +37,7 @@ export function ToastViewport({
 }) {
   return (
     <div
-      className="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex flex-col items-center gap-2 px-4 sm:bottom-6"
+      className="pointer-events-none fixed inset-x-0 bottom-4 z-[70] flex flex-col items-center gap-2 px-4 sm:bottom-6"
       role="status"
       aria-live="polite"
     >
@@ -46,10 +46,12 @@ export function ToastViewport({
           key={toast.seq}
           type="button"
           onClick={() => onDismiss(toast.seq)}
-          className={`pointer-events-auto flex w-full max-w-sm items-start gap-2 rounded-lg border px-3.5 py-2.5 text-left text-sm shadow-lg backdrop-blur ${KIND_STYLES[toast.kind]}`}
+          className={`panel-priority pointer-events-auto flex w-full max-w-sm items-start gap-2.5 rounded-xl border px-3.5 py-3 text-left text-sm text-hi ${KIND_STYLES[toast.kind]}`}
         >
-          <ToastIcon kind={toast.kind} />
-          <span className="flex-1">{toast.message}</span>
+          <span className={KIND_STYLES[toast.kind]}>
+            <ToastIcon kind={toast.kind} />
+          </span>
+          <span className="flex-1 text-mid">{toast.message}</span>
         </button>
       ))}
     </div>

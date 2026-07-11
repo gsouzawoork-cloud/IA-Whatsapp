@@ -7,7 +7,7 @@ export interface FilterOption<T extends string> {
   readonly count?: number;
 }
 
-/** Abas de filtro acessíveis (botões reais), com item ativo destacado. */
+/** Abas de filtro acessíveis (botões reais), roláveis, com item ativo destacado. */
 export function FilterTabs<T extends string>({
   options,
   value,
@@ -23,7 +23,7 @@ export function FilterTabs<T extends string>({
     <div
       role="tablist"
       aria-label={ariaLabel}
-      className="flex flex-wrap gap-1.5"
+      className="scroll-slim flex gap-1.5 overflow-x-auto pb-0.5"
     >
       {options.map((option) => {
         const active = option.value === value;
@@ -34,17 +34,17 @@ export function FilterTabs<T extends string>({
             type="button"
             aria-selected={active}
             onClick={() => onChange(option.value)}
-            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/60 ${
+            className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 ${
               active
-                ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-300"
-                : "border-neutral-800 text-neutral-400 hover:border-neutral-700 hover:text-neutral-200"
+                ? "border-accent/40 bg-accent-soft text-accent"
+                : "border-line text-low hover:border-strong hover:text-mid"
             }`}
           >
             {option.label}
             {typeof option.count === "number" ? (
               <span
-                className={`rounded-full px-1.5 text-[10px] ${
-                  active ? "bg-emerald-500/20" : "bg-neutral-800"
+                className={`num rounded-full px-1.5 text-[10px] ${
+                  active ? "bg-accent/20 text-accent" : "bg-white/[0.06] text-low"
                 }`}
               >
                 {option.count}

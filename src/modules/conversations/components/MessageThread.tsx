@@ -1,24 +1,19 @@
-import { formatTime } from "@/lib/format";
+import { Bot } from "lucide-react";
+import { dayKey, formatDayLabel, formatTime } from "@/lib/format";
 import type { Message, MessageAuthorType } from "../types";
 
 const BUBBLE_STYLES: Readonly<Record<MessageAuthorType, string>> = {
-  customer: "self-start bg-neutral-800 text-neutral-100 rounded-bl-sm",
-  ai: "self-end bg-emerald-500/15 text-emerald-50 border border-emerald-500/25 rounded-br-sm",
-  human: "self-end bg-sky-500/15 text-sky-50 border border-sky-500/25 rounded-br-sm",
+  customer:
+    "bg-surface-3 text-hi border border-line rounded-bl-md elev-low",
+  ai: "bg-accent-soft text-emerald-50 border border-accent/25 rounded-br-md",
+  human: "bg-info/12 text-sky-50 border border-info/25 rounded-br-md",
   system: "",
-};
-
-const AUTHOR_LABELS: Readonly<Record<MessageAuthorType, string>> = {
-  customer: "Cliente",
-  ai: "IA",
-  human: "Atendente",
-  system: "Sistema",
 };
 
 function SystemMessage({ message }: { message: Message }) {
   return (
-    <li className="self-center">
-      <span className="rounded-full bg-neutral-900 px-3 py-1 text-[11px] text-neutral-500">
+    <li className="flex justify-center">
+      <span className="rounded-full border border-subtle bg-white/[0.03] px-3 py-1 text-[11px] text-low">
         {message.content} · {formatTime(message.createdAt)}
       </span>
     </li>
@@ -26,35 +21,59 @@ function SystemMessage({ message }: { message: Message }) {
 }
 
 function Bubble({ message }: { message: Message }) {
+  const isCustomer = message.authorType === "customer";
   return (
-    <li className={`flex max-w-[80%] flex-col ${message.authorType === "customer" ? "self-start items-start" : "self-end items-end"}`}>
-      <div className={`rounded-2xl px-3.5 py-2 text-sm ${BUBBLE_STYLES[message.authorType]}`}>
-        <p className="mb-0.5 text-[10px] font-medium uppercase tracking-wide opacity-60">
-          {message.authorType === "human" || message.authorType === "ai"
-            ? message.authorName
-            : AUTHOR_LABELS[message.authorType]}
-        </p>
-        <p className="whitespace-pre-wrap">{message.content}</p>
+    <li className={`flex flex-col ${isCustomer ? "items-start" : "items-end"}`}>
+      <div
+        className={`max-w-[82%] rounded-2xl px-3.5 py-2 text-sm shadow-sm ${BUBBLE_STYLES[message.authorType]}`}
+      >
+        {message.authorType !== "customer" ? (
+          <p className="mb-0.5 flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide opacity-70">
+            {message.authorType === "ai" ? (
+              <Bot className="h-3 w-3" aria-hidden />
+            ) : null}
+            {message.authorName}
+          </p>
+        ) : null}
+        <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
       </div>
-      <span className="mt-0.5 px-1 text-[10px] text-neutral-500">
+      <span className="mt-1 px-1 text-[10px] text-dim">
         {formatTime(message.createdAt)}
-        {message.authorType !== "customer" && message.read ? " · lida" : ""}
+        {!isCustomer && message.read ? " · lida" : ""}
       </span>
     </li>
   );
 }
 
-/** Histórico de mensagens diferenciando cliente, IA, atendente e sistema. */
+/** Histórico de mensagens com separadores de data e balões diferenciados. */
 export function MessageThread({ messages }: { messages: readonly Message[] }) {
+  const items = messages.map((message, index) => {
+    const previous = index > 0 ? messages[index - 1] : undefined;
+    const showDay =
+      !previous || dayKey(previous.createdAt) !== dayKey(message.createdAt);
+    return { message, showDay };
+  });
+
   return (
-    <ul className="flex flex-col gap-2.5 p-4">
-      {messages.map((message) =>
-        message.authorType === "system" ? (
-          <SystemMessage key={message.id} message={message} />
-        ) : (
-          <Bubble key={message.id} message={message} />
-        ),
-      )}
+    <ul className="flex flex-col gap-2.5 px-4 py-5">
+      {items.map(({ message, showDay }) => {
+        return (
+          <div key={message.id} className="contents">
+            {showDay ? (
+              <li className="flex justify-center py-1">
+                <span className="rounded-full border border-subtle bg-surface-1 px-3 py-0.5 text-[11px] font-semibold text-low">
+                  {formatDayLabel(message.createdAt)}
+                </span>
+              </li>
+            ) : null}
+            {message.authorType === "system" ? (
+              <SystemMessage message={message} />
+            ) : (
+              <Bubble message={message} />
+            )}
+          </div>
+        );
+      })}
     </ul>
   );
 }

@@ -21,8 +21,9 @@ export default function FilaPage() {
   const base = state.data.business.defaultPreparationMinutes;
 
   return (
-    <div className="mx-auto max-w-6xl space-y-4 p-4 lg:p-6">
+    <div className="mx-auto max-w-7xl space-y-4 p-4 lg:p-8">
       <PageHeader
+        eyebrow="Módulo · Fila de preparo"
         title="Fila de preparo"
         description="Avance cada pedido pelas etapas. Mudanças de status atualizam a conversa do cliente."
       />
@@ -34,19 +35,17 @@ export default function FilaPage() {
             <section
               key={status}
               aria-label={ORDER_STATUS_LABELS[status]}
-              className="rounded-lg border border-neutral-800 bg-neutral-950"
+              className="flex flex-col rounded-xl border border-subtle bg-surface-1/40"
             >
-              <header className="flex items-center justify-between border-b border-neutral-800 px-3 py-2">
-                <h2 className="text-sm font-semibold text-neutral-200">
-                  {ORDER_STATUS_LABELS[status]}
-                </h2>
-                <span className="rounded-full bg-neutral-800 px-2 text-xs text-neutral-400">
+              <header className="flex items-center justify-between border-b border-subtle px-3 py-2.5">
+                <h2 className="t-section text-sm">{ORDER_STATUS_LABELS[status]}</h2>
+                <span className="num flex h-5 min-w-5 items-center justify-center rounded-full bg-white/[0.06] px-1.5 text-xs font-bold text-mid">
                   {orders.length}
                 </span>
               </header>
-              <div className="space-y-2 p-2">
+              <div className="scroll-slim flex-1 space-y-2 overflow-y-auto p-2">
                 {orders.length === 0 ? (
-                  <p className="px-2 py-6 text-center text-xs text-neutral-600">
+                  <p className="rounded-lg border border-dashed border-line px-2 py-8 text-center text-xs text-dim">
                     Vazio
                   </p>
                 ) : (

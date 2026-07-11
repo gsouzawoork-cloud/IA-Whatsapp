@@ -5,13 +5,13 @@ export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 
 const VARIANT_CLASSES: Readonly<Record<ButtonVariant, string>> = {
   primary:
-    "bg-emerald-500 text-neutral-950 hover:bg-emerald-400 focus-visible:ring-emerald-400/60",
+    "bg-accent text-[#06231a] font-bold shadow-[0_6px_18px_-6px_rgba(61,220,151,0.55)] hover:bg-accent-hi hover:-translate-y-px active:translate-y-0 focus-visible:ring-accent/60",
   secondary:
-    "border border-neutral-700 bg-neutral-800/60 text-neutral-100 hover:bg-neutral-800 focus-visible:ring-neutral-500/60",
+    "border border-strong bg-white/[0.04] text-hi hover:bg-white/[0.08] hover:-translate-y-px active:translate-y-0 focus-visible:ring-white/30",
   ghost:
-    "text-neutral-300 hover:bg-neutral-800/60 focus-visible:ring-neutral-500/60",
+    "text-mid hover:bg-white/[0.06] hover:text-hi focus-visible:ring-white/30",
   danger:
-    "border border-red-500/40 bg-red-500/10 text-red-300 hover:bg-red-500/20 focus-visible:ring-red-400/60",
+    "border border-bad/40 bg-bad/10 text-bad hover:bg-bad/20 hover:-translate-y-px active:translate-y-0 focus-visible:ring-bad/50",
 };
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -20,7 +20,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   ref?: Ref<HTMLButtonElement>;
 };
 
-/** Botão real (elemento `<button>`) com variantes e foco visível. */
+/** Botão real (`<button>`) com variantes, elevação no hover e foco visível. */
 export function Button({
   variant = "secondary",
   size = "md",
@@ -34,7 +34,7 @@ export function Button({
     <button
       ref={ref}
       type={type}
-      className={`inline-flex items-center justify-center gap-1.5 rounded-md font-medium transition-colors focus:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-40 ${sizeClasses} ${VARIANT_CLASSES[variant]} ${className}`}
+      className={`inline-flex items-center justify-center gap-1.5 rounded-lg font-semibold transition-[transform,background-color,box-shadow] duration-150 focus:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0 ${sizeClasses} ${VARIANT_CLASSES[variant]} ${className}`}
       {...props}
     />
   );
