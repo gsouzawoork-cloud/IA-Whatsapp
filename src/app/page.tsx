@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
@@ -22,6 +24,18 @@ export default function Home() {
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-neutral-600 dark:text-neutral-400">
             {siteConfig.description}
           </p>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <Link
+              href="/demo"
+              className="inline-flex items-center gap-2 rounded-md bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-neutral-950 transition-colors hover:bg-emerald-400"
+            >
+              Abrir ambiente simulado
+              <ArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
+            <span className="text-xs text-neutral-500 dark:text-neutral-400">
+              Demonstração com dados fictícios — sem integrações reais.
+            </span>
+          </div>
         </section>
 
         <section aria-labelledby="pillars-title" className="mt-14">

@@ -1,8 +1,25 @@
 # USER_FLOWS.md — Fluxos de usuário (conceituais)
 
-> **Todos os fluxos abaixo são conceituais e ainda NÃO estão implementados.**
-> Descrevem o comportamento pretendido para orientar decisões de arquitetura e
-> de design. A fase de cada fluxo é indicada em [`ROADMAP.md`](ROADMAP.md).
+> Os fluxos abaixo descrevem o comportamento pretendido. A fase de cada fluxo é
+> indicada em [`ROADMAP.md`](ROADMAP.md).
+
+## Estado na Fase 1 (protótipo simulado)
+
+**Simulados e operáveis agora** (dados fictícios + regras determinísticas locais,
+sem backend): assunção por humano, pausar/devolver para a IA, transferência
+(simulada), montagem de pedido, verificação de disponibilidade, cálculo de totais,
+pagamento (Pix simulado, cartão na entrega, dinheiro com troco), fila de preparo,
+atualização de status do pedido gerando mensagens na conversa, e encerramento/reabertura.
+
+**Ainda futuros** (não implementados): onboarding e ativação de módulos (Fase 7),
+atendimento automático com IA real e ferramentas validadas (Fase 4), integração com
+WhatsApp (Fase 5), pagamentos reais e reembolso (Fase 6) e revisão automatizada de
+conversas (Fase 8). No protótipo, a "IA" apenas segue mensagens pré-definidas e
+eventos determinísticos — não há Claude API.
+
+O fluxo completo de pedido de pizzaria (seção 8) está **simulado ponta a ponta** no
+protótipo: cliente → conversa → rascunho → itens → disponibilidade → endereço →
+pagamento → confirmação → fila → status → conclusão.
 
 ## 1. Onboarding da empresa (Fase 7)
 

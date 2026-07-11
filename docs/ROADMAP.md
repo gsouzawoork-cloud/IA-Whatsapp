@@ -1,7 +1,8 @@
 # ROADMAP.md — Roadmap por fases
 
 Evolução em fases, do simples ao completo, sem superdimensionar. Cada fase só
-começa quando solicitada. **A fase atual é a Fase 0.**
+começa quando solicitada. **A Fase 0 está concluída e a Fase 1 (protótipo
+simulado) está implementada.** A Fase 2 ainda não foi iniciada.
 
 Para cada fase: objetivo · entregas · fora do escopo · dependências · riscos ·
 critérios objetivos de conclusão.
@@ -24,19 +25,33 @@ critérios objetivos de conclusão.
 
 ---
 
-## Fase 1 — Protótipo simulado da central
+## Fase 1 — Protótipo simulado da central (IMPLEMENTADA)
 
-- **Objetivo:** validar a experiência da central de atendimento com dados em
-  memória (mock), sem persistência.
-- **Entregas:** layout de três áreas no desktop (lista de conversas · mensagens ·
-  painel do cliente) e navegação adaptada no mobile; estados de conversa
-  navegáveis; navegação condicional por módulo (mock).
-- **Fora do escopo:** banco, autenticação, IA, WhatsApp, pagamentos; qualquer
-  persistência real.
+- **Objetivo:** validar a experiência da central de atendimento com dados
+  simulados centralizados e regras determinísticas locais, sem backend.
+- **Entregas realizadas:**
+  - App shell com sidebar (desktop) e navegação inferior (mobile); rota `/demo`
+    de entrada e CTA na página institucional; identificação de ambiente demo.
+  - Central de atendimento em três áreas no desktop (lista · conversa · contexto)
+    e uma etapa por tela no mobile; busca, filtros, assumir/pausar/devolver IA,
+    transferir, encerrar/reabrir e mensagem manual.
+  - Pedidos: rascunho → itens → disponibilidade → endereço → pagamento →
+    confirmação → status; fila de preparo com avanço por etapas; pagamento
+    simulado (Pix, cartão na entrega, dinheiro com troco).
+  - Produtos e disponibilidade (sempre disponível · manual · quantidade);
+    clientes com histórico; configuração simulada da IA.
+  - Estado da demonstração (Context + `useReducer`, sub-reducers por domínio),
+    persistência opcional em `localStorage` e "Restaurar demonstração".
+  - Regras puras de domínio tipadas e **50 testes** (Vitest).
+- **Fora do escopo (mantido):** banco, autenticação, IA real, WhatsApp,
+  pagamentos reais; qualquer persistência de servidor.
 - **Dependências:** Fase 0.
-- **Riscos:** confundir mock com funcionalidade; overengineering de UI.
-- **Conclusão:** central navegável com dados mock; responsiva e acessível; sem
-  qualquer integração externa; claramente identificada como protótipo.
+- **Critérios cumpridos:** `lint`, `typecheck`, `test:run` e `build` passam; central
+  navegável e operável; responsiva e com acessibilidade básica; sem integração
+  externa; claramente identificada como protótipo.
+- **Pendências reais:** verificação end-to-end via navegador automatizado não foi
+  executada (Playwright não incluído para não adicionar dependência); a persistência
+  cobre dados, não a seleção de conversa.
 
 ---
 
