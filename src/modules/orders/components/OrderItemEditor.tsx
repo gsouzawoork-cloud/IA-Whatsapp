@@ -34,7 +34,7 @@ export function OrderItemEditor({ order }: { order: Order }) {
                 </p>
               </div>
               {editable ? (
-                <div className="flex items-center gap-0.5 rounded-lg border border-line bg-black/20 p-0.5">
+                <div className="flex items-center gap-0.5 rounded-lg border border-line bg-field p-0.5">
                   <button
                     type="button"
                     aria-label={`Diminuir ${item.productName}`}

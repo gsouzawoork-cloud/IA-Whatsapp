@@ -65,7 +65,7 @@ export function MessageComposer({
             }}
             rows={1}
             placeholder={disabled ? "Conversa encerrada" : "Escreva uma mensagem manual…"}
-            className="max-h-32 w-full resize-none rounded-xl border border-line bg-black/20 px-3.5 py-2.5 text-sm text-hi shadow-inner placeholder:text-low focus:border-accent/50 focus:bg-black/30 focus:outline-none focus:ring-1 focus:ring-accent/40 disabled:opacity-50"
+            className="field max-h-32 w-full resize-none rounded-xl px-3.5 py-2.5 text-sm text-hi placeholder:text-low disabled:opacity-50"
           />
         </label>
         <Button type="submit" variant="primary" disabled={disabled || !value.trim()}>

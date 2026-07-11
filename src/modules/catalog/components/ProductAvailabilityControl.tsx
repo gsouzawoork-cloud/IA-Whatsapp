@@ -45,7 +45,7 @@ export function ProductAvailabilityControl({ product }: { product: Product }) {
           onClick={toggle}
           className={`relative inline-flex h-5 w-9 items-center rounded-full border transition-colors ${
             available
-              ? "border-accent/40 bg-accent/80 shadow-[0_0_10px_rgba(61,220,151,0.4)]"
+              ? "border-accent/40 bg-accent/80 shadow-[0_0_10px_rgba(126,224,181,0.4)]"
               : "border-line bg-white/[0.06]"
           }`}
         >
@@ -73,7 +73,7 @@ export function ProductAvailabilityControl({ product }: { product: Product }) {
 
   const quantity = product.availability.quantity ?? 0;
   return (
-    <div className="flex items-center gap-0.5 rounded-lg border border-line bg-black/20 p-0.5">
+    <div className="flex items-center gap-0.5 rounded-lg border border-line bg-field p-0.5">
       <button
         type="button"
         aria-label={`Diminuir quantidade de ${product.name}`}

@@ -128,7 +128,7 @@ export function PaymentEditor({ order }: { order: Order }) {
               value={cashInput}
               onChange={(event) => setCashInput(event.target.value)}
               placeholder={formatCurrency(total).replace("R$", "").trim()}
-              className="num mt-1 w-full rounded-lg border border-line bg-black/20 px-2.5 py-1.5 text-sm text-hi placeholder:text-dim focus:border-accent/50 focus:outline-none"
+              className="field num mt-1 w-full rounded-lg px-2.5 py-1.5 text-sm text-hi placeholder:text-dim"
             />
           </label>
           <Button size="sm" variant="secondary" onClick={submitCash} disabled={!cashInput.trim()}>

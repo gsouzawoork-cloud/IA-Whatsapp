@@ -1,53 +1,60 @@
 @import "tailwindcss";
 
 /*
- * Sistema visual da plataforma (redesign premium).
- * Tokens centralizados: superfícies em camadas, bordas graduadas, texto
- * hierárquico, acento seletivo, sombras multicamada e escala tipográfica.
+ * Sistema visual da plataforma (dark premium, refinamento cromático).
+ * Tons grafite/carvão em vez de preto puro; off-white em vez de branco puro;
+ * bordas sutis (nunca gritantes); acento verde-azulado sofisticado e seletivo.
  */
 @theme {
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-  /* Superfícies (Nível 0 → 3) */
-  --color-app: #090b0c;
-  --color-raised: #0d1011;
-  --color-surface-1: #121618;
-  --color-surface-2: #171b1e;
-  --color-surface-3: #1e2429;
-  --color-surface-active: #232b30;
+  /* Superfícies (Nível 0 → 3) — grafite, sem preto absoluto */
+  --color-app: #080b0d;
+  --color-raised: #0b0f12;
+  --color-surface-1: #0f1417;
+  --color-surface-2: #12181c;
+  --color-surface-3: #151c20;
+  --color-surface-active: #192126;
+  /* Campos de entrada: superfície própria, levemente rebaixada */
+  --color-field: #0d1216;
 
-  /* Bordas (use como border-*) */
-  --color-subtle: rgba(255, 255, 255, 0.05);
-  --color-line: rgba(255, 255, 255, 0.08);
-  --color-strong: rgba(255, 255, 255, 0.14);
+  /* Bordas — sutis, à base de luz, nunca branco puro */
+  --color-subtle: rgba(255, 255, 255, 0.06);
+  --color-line: rgba(255, 255, 255, 0.09);
+  --color-strong: rgba(255, 255, 255, 0.13);
 
-  /* Texto */
-  --color-hi: #eef2f1;
-  --color-mid: #adb7b5;
-  --color-low: #7b8583;
-  --color-dim: #525b59;
+  /* Texto — off-white, com brilho decrescente */
+  --color-hi: rgba(255, 255, 255, 0.92);
+  --color-mid: rgba(255, 255, 255, 0.68);
+  --color-low: rgba(255, 255, 255, 0.45);
+  --color-dim: rgba(255, 255, 255, 0.3);
 
-  /* Acento (verde-azulado, uso seletivo) */
-  --color-accent: #3ddc97;
-  --color-accent-hi: #58e7a9;
-  --color-accent-soft: rgba(61, 220, 151, 0.12);
+  /* Acento (verde-azulado sofisticado, não neon) */
+  --color-accent: #7ee0b5;
+  --color-accent-hi: #96e8c6;
+  --color-accent-soft: rgba(126, 224, 181, 0.14);
 
-  /* Estados semânticos */
-  --color-ok: #34d399;
-  --color-warn: #f6c344;
-  --color-bad: #f4726b;
-  --color-info: #63a4f4;
+  /* Apoio discreto (teal acinzentado) */
+  --color-support: #7fb0c6;
+
+  /* Estados semânticos — vivos mas queimados, sem saturação excessiva */
+  --color-ok: #6fd7a6;
+  --color-warn: #e6b45c;
+  --color-bad: #e08277;
+  --color-info: #7fb0d4;
 }
 
 :root {
   color-scheme: light dark;
 
-  --shadow-low: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 1px rgba(0, 0, 0, 0.2);
-  --shadow-medium: 0 10px 30px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.22),
+  --shadow-low: 0 1px 2px rgba(0, 0, 0, 0.35), 0 1px 1px rgba(0, 0, 0, 0.22);
+  --shadow-medium: 0 12px 30px rgba(0, 0, 0, 0.35), 0 3px 8px rgba(0, 0, 0, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  --shadow-high: 0 28px 64px rgba(0, 0, 0, 0.5), 0 8px 20px rgba(0, 0, 0, 0.32),
     inset 0 1px 0 rgba(255, 255, 255, 0.045);
-  --shadow-high: 0 24px 60px rgba(0, 0, 0, 0.42), 0 6px 18px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --glow-accent: 0 0 0 1px rgba(126, 224, 181, 0.16),
+    0 10px 34px -14px rgba(126, 224, 181, 0.28);
 }
 
 html {
@@ -84,47 +91,65 @@ html {
   .elev-high {
     box-shadow: var(--shadow-high);
   }
+  /* Brilho de acento discreto para elementos ativos/prioritários */
+  .glow-accent {
+    box-shadow: var(--shadow-medium), var(--glow-accent);
+  }
 
-  /* Canvas de fundo da aplicação: grafite quase preto + luz radial discreta */
+  /* Canvas de fundo: grafite + iluminação radial (verde + teal) muito discreta */
   .app-canvas {
     background:
       radial-gradient(
-        900px circle at 12% -8%,
-        rgba(61, 220, 151, 0.05),
-        transparent 42%
+        1000px circle at 10% -12%,
+        rgba(126, 224, 181, 0.06),
+        transparent 44%
       ),
       radial-gradient(
-        700px circle at 100% 0%,
-        rgba(99, 164, 244, 0.035),
-        transparent 38%
+        820px circle at 100% -4%,
+        rgba(127, 176, 198, 0.045),
+        transparent 40%
       ),
       var(--color-app);
   }
 
-  /* Painel elevado (Nível 2) com luz superior sutil */
+  /* Painel (Nível 2): superfície própria + brilho superior sutil */
   .panel {
     background:
       linear-gradient(
         180deg,
-        rgba(255, 255, 255, 0.025),
-        rgba(255, 255, 255, 0) 55%
+        rgba(255, 255, 255, 0.022),
+        rgba(255, 255, 255, 0) 58%
       ),
       var(--color-surface-2);
     border: 1px solid var(--color-line);
     border-radius: 14px;
   }
 
-  /* Elemento prioritário (Nível 3): mais claro, elevado, com brilho interno */
+  /* Elemento prioritário (Nível 3): mais claro, elevado, com luz interna */
   .panel-priority {
     background:
       linear-gradient(
         180deg,
-        rgba(255, 255, 255, 0.045),
-        rgba(255, 255, 255, 0.01) 60%
+        rgba(255, 255, 255, 0.04),
+        rgba(255, 255, 255, 0.008) 62%
       ),
-      var(--color-surface-3);
+      var(--color-surface-active);
     border: 1px solid var(--color-strong);
     box-shadow: var(--shadow-high);
+  }
+
+  /* Campo de entrada: superfície rebaixada e trabalhada */
+  .field {
+    background: var(--color-field);
+    border: 1px solid var(--color-line);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+  }
+  .field:focus {
+    border-color: rgba(126, 224, 181, 0.5);
+    box-shadow:
+      inset 0 1px 2px rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(126, 224, 181, 0.35);
+    outline: none;
   }
 
   /* Barra de rolagem discreta para áreas operacionais */

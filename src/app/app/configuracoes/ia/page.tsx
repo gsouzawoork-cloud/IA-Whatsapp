@@ -34,7 +34,7 @@ const BLOCKS: readonly { key: keyof AgentSettings; label: string }[] = [
 ];
 
 function fieldClass() {
-  return "mt-1 w-full rounded-lg border border-line bg-black/20 px-3 py-2 text-sm text-hi focus:border-accent/50 focus:outline-none focus:ring-1 focus:ring-accent/40";
+  return "field mt-1 w-full rounded-lg px-3 py-2 text-sm text-hi";
 }
 
 function Toggle({

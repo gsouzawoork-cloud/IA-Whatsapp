@@ -79,7 +79,7 @@ export function AddressEditor({ order }: { order: Order }) {
                 onChange={(event) =>
                   setForm((current) => ({ ...current, [field.key]: event.target.value }))
                 }
-                className="mt-0.5 w-full rounded-lg border border-line bg-black/20 px-2.5 py-1.5 text-sm text-hi focus:border-accent/50 focus:outline-none"
+                className="field mt-0.5 w-full rounded-lg px-2.5 py-1.5 text-sm text-hi"
               />
             </label>
           ))}
