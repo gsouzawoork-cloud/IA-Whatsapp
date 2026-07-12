@@ -33,6 +33,7 @@ export interface UnitOption {
 /** Contexto resolvido e pronto para uso pelas rotas reais. */
 export interface OrganizationContext {
   readonly userId: string;
+  readonly userName: string;
   readonly organizationId: string;
   readonly organizationName: string;
   readonly role: AppRole;
@@ -129,10 +130,22 @@ export async function resolveOrganizationContext(): Promise<OrgContextResult> {
     .eq("enabled", true);
   const enabledModules = (modulesData ?? []).map((m) => m.module);
 
+  // Nome de exibição: perfil, senão prefixo do e-mail.
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("full_name")
+    .eq("id", user.id)
+    .maybeSingle();
+  const userName =
+    (profile?.full_name && profile.full_name.trim().length > 0
+      ? profile.full_name
+      : user.email?.split("@")[0]) ?? "Usuário";
+
   return {
     kind: "ok",
     context: {
       userId: user.id,
+      userName,
       organizationId: chosen.id,
       organizationName: chosen.displayName,
       role: chosen.role,
