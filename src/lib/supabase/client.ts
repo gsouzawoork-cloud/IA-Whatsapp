@@ -1,5 +1,6 @@
 import { createBrowserClient } from "@supabase/ssr";
 import type { Database } from "./database.types";
+import type { TypedSupabaseClient } from "./types";
 import { requireSupabasePublicConfig } from "./config";
 
 /**
@@ -11,7 +12,10 @@ import { requireSupabasePublicConfig } from "./config";
  * apenas quando o Supabase estiver configurado; o `requireSupabasePublicConfig`
  * lança de forma segura (sem expor valores) caso contrário.
  */
-export function createSupabaseBrowserClient() {
+export function createSupabaseBrowserClient(): TypedSupabaseClient {
   const { url, publishableKey } = requireSupabasePublicConfig();
-  return createBrowserClient<Database>(url, publishableKey);
+  return createBrowserClient<Database>(
+    url,
+    publishableKey,
+  ) as unknown as TypedSupabaseClient;
 }

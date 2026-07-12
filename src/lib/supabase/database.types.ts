@@ -8,6 +8,10 @@
  *
  * O formato segue o gerador oficial (Row/Insert/Update por tabela + Enums), de
  * modo que os clients e repositórios já são fortemente tipados.
+ *
+ * NOTA TÉCNICA: os shapes de linha são `type` (não `interface`) de propósito —
+ * o constraint `GenericSchema` do supabase-js exige `Record<string, unknown>`,
+ * e apenas type aliases (não interfaces) satisfazem essa atribuição estrutural.
  */
 
 export type Json =
@@ -60,23 +64,23 @@ export type PaymentStatus = "unpaid" | "pending" | "paid" | "refunded";
 export type ActorType = "user" | "agent" | "system";
 export type AuditResult = "success" | "denied" | "failure";
 
-/** Helper para declarar uma tabela com defaults sensatos de Insert/Update. */
-interface TableShape<Row, Insert, Update> {
+/** Tabela com defaults de Insert/Update no formato do gerador oficial. */
+type TableShape<Row, Insert, Update> = {
   Row: Row;
   Insert: Insert;
   Update: Update;
   Relationships: [];
-}
+};
 
 type Timestamps = { created_at: string; updated_at: string };
 
-interface ProfileRow extends Timestamps {
+type ProfileRow = Timestamps & {
   id: string;
   full_name: string;
   avatar_url: string | null;
   locale: string;
-}
-interface OrganizationRow extends Timestamps {
+};
+type OrganizationRow = Timestamps & {
   id: string;
   display_name: string;
   legal_name: string | null;
@@ -89,15 +93,15 @@ interface OrganizationRow extends Timestamps {
   locale: string;
   onboarding_status: OnboardingStatus;
   created_by: string;
-}
-interface MembershipRow extends Timestamps {
+};
+type MembershipRow = Timestamps & {
   id: string;
   organization_id: string;
   user_id: string;
   role: AppRole;
   status: MembershipStatus;
-}
-interface UnitRow extends Timestamps {
+};
+type UnitRow = Timestamps & {
   id: string;
   organization_id: string;
   name: string;
@@ -114,15 +118,15 @@ interface UnitRow extends Timestamps {
   postal_code: string | null;
   country: string;
   is_active: boolean;
-}
-interface ModuleRow extends Timestamps {
+};
+type ModuleRow = Timestamps & {
   id: string;
   organization_id: string;
   module: AppModule;
   enabled: boolean;
   configured_at: string | null;
-}
-interface BusinessProfileRow extends Timestamps {
+};
+type BusinessProfileRow = Timestamps & {
   id: string;
   organization_id: string;
   description: string;
@@ -131,8 +135,8 @@ interface BusinessProfileRow extends Timestamps {
   default_language: string;
   default_tone: string;
   human_handoff_policy: string;
-}
-interface BusinessHoursRow extends Timestamps {
+};
+type BusinessHoursRow = Timestamps & {
   id: string;
   organization_id: string;
   unit_id: string;
@@ -140,8 +144,8 @@ interface BusinessHoursRow extends Timestamps {
   opens_at: string | null;
   closes_at: string | null;
   is_closed: boolean;
-}
-interface KnowledgeRow extends Timestamps {
+};
+type KnowledgeRow = Timestamps & {
   id: string;
   organization_id: string;
   unit_id: string | null;
@@ -151,8 +155,8 @@ interface KnowledgeRow extends Timestamps {
   is_active: boolean;
   priority: number;
   created_by: string | null;
-}
-interface ProductRow extends Timestamps {
+};
+type ProductRow = Timestamps & {
   id: string;
   organization_id: string;
   unit_id: string | null;
@@ -163,8 +167,8 @@ interface ProductRow extends Timestamps {
   price_cents: number;
   is_active: boolean;
   availability_mode: AvailabilityMode;
-}
-interface AvailabilityRow extends Timestamps {
+};
+type AvailabilityRow = Timestamps & {
   id: string;
   organization_id: string;
   unit_id: string;
@@ -172,8 +176,8 @@ interface AvailabilityRow extends Timestamps {
   is_available: boolean;
   quantity: number | null;
   updated_by: string | null;
-}
-interface DeliveryZoneRow extends Timestamps {
+};
+type DeliveryZoneRow = Timestamps & {
   id: string;
   organization_id: string;
   unit_id: string;
@@ -187,8 +191,8 @@ interface DeliveryZoneRow extends Timestamps {
   estimated_min_minutes: number;
   estimated_max_minutes: number;
   is_active: boolean;
-}
-interface CustomerRow extends Timestamps {
+};
+type CustomerRow = Timestamps & {
   id: string;
   organization_id: string;
   unit_id: string | null;
@@ -202,8 +206,8 @@ interface CustomerRow extends Timestamps {
   city: string | null;
   postal_code: string | null;
   notes: string | null;
-}
-interface ConversationRow extends Timestamps {
+};
+type ConversationRow = Timestamps & {
   id: string;
   organization_id: string;
   unit_id: string;
@@ -213,8 +217,8 @@ interface ConversationRow extends Timestamps {
   assigned_user_id: string | null;
   agent_mode: AgentMode;
   last_message_at: string | null;
-}
-interface MessageRow {
+};
+type MessageRow = {
   id: string;
   organization_id: string;
   unit_id: string;
@@ -224,8 +228,8 @@ interface MessageRow {
   content: string;
   message_type: MessageType;
   created_at: string;
-}
-interface OrderRow extends Timestamps {
+};
+type OrderRow = Timestamps & {
   id: string;
   organization_id: string;
   unit_id: string;
@@ -247,8 +251,8 @@ interface OrderRow extends Timestamps {
   idempotency_key: string | null;
   created_by_type: ActorType;
   created_by_user_id: string | null;
-}
-interface OrderItemRow {
+};
+type OrderItemRow = {
   id: string;
   organization_id: string;
   order_id: string;
@@ -259,8 +263,8 @@ interface OrderItemRow {
   line_total_cents: number;
   notes: string | null;
   created_at: string;
-}
-interface AgentSettingsRow extends Timestamps {
+};
+type AgentSettingsRow = Timestamps & {
   id: string;
   organization_id: string;
   unit_id: string | null;
@@ -277,15 +281,15 @@ interface AgentSettingsRow extends Timestamps {
   can_create_order_draft: boolean;
   can_inform_order_status: boolean;
   can_suggest_alternatives: boolean;
-}
-interface OnboardingRow extends Timestamps {
+};
+type OnboardingRow = Timestamps & {
   id: string;
   organization_id: string;
   current_step: string;
   completed_steps: string[];
   completed_at: string | null;
-}
-interface AuditRow {
+};
+type AuditRow = {
   id: string;
   organization_id: string;
   unit_id: string | null;
@@ -298,12 +302,17 @@ interface AuditRow {
   metadata: Json;
   request_id: string | null;
   created_at: string;
-}
+};
+type UnitAccessRow = {
+  membership_id: string;
+  unit_id: string;
+  created_at: string;
+};
 
 // Insert/Update permissivos (campos com default são opcionais no Insert).
 type Insertable<Row> = Partial<Row> & { organization_id?: string };
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       profiles: TableShape<ProfileRow, Insertable<ProfileRow> & { id: string }, Partial<ProfileRow>>;
@@ -311,9 +320,9 @@ export interface Database {
       organization_memberships: TableShape<MembershipRow, Insertable<MembershipRow>, Partial<MembershipRow>>;
       units: TableShape<UnitRow, Insertable<UnitRow>, Partial<UnitRow>>;
       membership_unit_access: TableShape<
-        { membership_id: string; unit_id: string; created_at: string },
+        UnitAccessRow,
         { membership_id: string; unit_id: string },
-        { membership_id?: string; unit_id?: string }
+        Partial<UnitAccessRow>
       >;
       organization_modules: TableShape<ModuleRow, Insertable<ModuleRow>, Partial<ModuleRow>>;
       business_profiles: TableShape<BusinessProfileRow, Insertable<BusinessProfileRow>, Partial<BusinessProfileRow>>;
@@ -331,7 +340,7 @@ export interface Database {
       onboarding_progress: TableShape<OnboardingRow, Insertable<OnboardingRow>, Partial<OnboardingRow>>;
       audit_logs: TableShape<AuditRow, Insertable<AuditRow>, Partial<AuditRow>>;
     };
-    Views: Record<string, never>;
+    Views: Record<never, never>;
     Functions: {
       create_organization_with_owner: {
         Args: {
@@ -363,6 +372,6 @@ export interface Database {
       actor_type: ActorType;
       audit_result: AuditResult;
     };
-    CompositeTypes: Record<string, never>;
+    CompositeTypes: Record<never, never>;
   };
-}
+};

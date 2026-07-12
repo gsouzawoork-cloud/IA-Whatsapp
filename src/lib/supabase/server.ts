@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import type { Database } from "./database.types";
+import type { TypedSupabaseClient } from "./types";
 import { requireSupabasePublicConfig } from "./config";
 
 /** Formato de cada cookie que o Supabase pede para gravar. */
@@ -18,11 +19,11 @@ type CookieToSet = { name: string; value: string; options: CookieOptions };
  * esse motivo; a renovação efetiva da sessão acontece no middleware
  * (`updateSession`), que roda em um contexto onde a escrita é permitida.
  */
-export async function createSupabaseServerClient() {
+export async function createSupabaseServerClient(): Promise<TypedSupabaseClient> {
   const { url, publishableKey } = requireSupabasePublicConfig();
   const cookieStore = await cookies();
 
-  return createServerClient<Database>(url, publishableKey, {
+  const client = createServerClient<Database>(url, publishableKey, {
     cookies: {
       getAll() {
         return cookieStore.getAll();
@@ -39,4 +40,6 @@ export async function createSupabaseServerClient() {
       },
     },
   });
+
+  return client as unknown as TypedSupabaseClient;
 }
