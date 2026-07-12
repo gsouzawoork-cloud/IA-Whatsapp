@@ -11,6 +11,7 @@ import { formatDateTime } from "@/lib/format";
 import { useDemo } from "@/modules/demo/state/DemoProvider";
 import { demoAgentSettings } from "@/data/demo/agent-settings";
 import { AgentCapabilitySummary } from "@/modules/agent/components/AgentCapabilitySummary";
+import { DeliveryZonesCard } from "@/modules/delivery/components/DeliveryZonesCard";
 import type { AgentSettings, AgentTone } from "@/modules/agent/types";
 
 const TONES: readonly { value: AgentTone; label: string }[] = [
@@ -185,6 +186,8 @@ export default function AgentConfigPage() {
               ))}
             </div>
           </SectionCard>
+
+          <DeliveryZonesCard />
 
           <div className="panel elev-low sticky bottom-4 flex flex-wrap items-center justify-between gap-3 rounded-xl px-4 py-3">
             <p className="text-xs text-low">

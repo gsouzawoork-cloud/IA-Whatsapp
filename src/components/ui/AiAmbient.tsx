@@ -52,12 +52,12 @@ export function AiAmbient({ className = "" }: { className?: string }) {
       >
         <defs>
           <radialGradient id="ai-bloom" cx="70%" cy="20%" r="60%">
-            <stop offset="0%" stopColor="rgba(105,217,164,0.22)" />
-            <stop offset="100%" stopColor="rgba(105,217,164,0)" />
+            <stop offset="0%" stopColor="rgba(114,214,173,0.22)" />
+            <stop offset="100%" stopColor="rgba(114,214,173,0)" />
           </radialGradient>
           <radialGradient id="ai-bloom-2" cx="20%" cy="90%" r="55%">
-            <stop offset="0%" stopColor="rgba(93,203,213,0.14)" />
-            <stop offset="100%" stopColor="rgba(93,203,213,0)" />
+            <stop offset="0%" stopColor="rgba(101,201,211,0.14)" />
+            <stop offset="100%" stopColor="rgba(101,201,211,0)" />
           </radialGradient>
           <radialGradient id="ai-fade" cx="60%" cy="35%" r="75%">
             <stop offset="55%" stopColor="white" />
@@ -72,7 +72,7 @@ export function AiAmbient({ className = "" }: { className?: string }) {
         <rect width="400" height="200" fill="url(#ai-bloom-2)" />
 
         <g mask="url(#ai-mask)">
-          <g stroke="rgba(105,217,164,0.18)" strokeWidth="0.75">
+          <g stroke="rgba(114,214,173,0.18)" strokeWidth="0.75">
             {LINKS.map(([a, b], i) => {
               const from = NODES[a]!;
               const to = NODES[b]!;
@@ -85,7 +85,7 @@ export function AiAmbient({ className = "" }: { className?: string }) {
               cx={node.x}
               cy={node.y}
               r={node.r}
-              fill={node.teal ? "rgba(93,203,213,0.7)" : "rgba(105,217,164,0.65)"}
+              fill={node.teal ? "rgba(101,201,211,0.7)" : "rgba(114,214,173,0.65)"}
             />
           ))}
         </g>

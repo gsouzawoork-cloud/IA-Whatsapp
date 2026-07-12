@@ -5,6 +5,7 @@ import {
   AlertCircle,
   ArrowRight,
   Bot,
+  BrainCircuit,
   ChefHat,
   ChevronRight,
   Clock,
@@ -21,9 +22,11 @@ import { AiAmbient } from "@/components/ui/AiAmbient";
 import { formatCurrency, formatDuration, formatElapsed } from "@/lib/format";
 import { useDemo } from "@/modules/demo/state/DemoProvider";
 import {
+  getOperationInsights,
   getOverviewMetrics,
   getRecentOrders,
   getUnavailableProducts,
+  type InsightTone,
 } from "@/modules/demo/state/metrics";
 import { getOrderTotals, listConversations } from "@/modules/demo/state/selectors";
 import { getPreparationQueue } from "@/modules/preparation/domain/queue";
@@ -36,9 +39,17 @@ const REASON: Partial<Record<ConversationStatus, string>> = {
   waiting_human: "Cliente pediu atendente",
 };
 
+const INSIGHT_DOT: Readonly<Record<InsightTone, string>> = {
+  accent: "bg-accent",
+  info: "bg-info",
+  warn: "bg-warn",
+  neutral: "bg-low",
+};
+
 export default function OverviewPage() {
   const { state, actions } = useDemo();
   const metrics = getOverviewMetrics(state.data);
+  const insights = getOperationInsights(state.data);
   const priority = listConversations(state.data, "attention", "").slice(0, 5);
   const recentOrders = getRecentOrders(state.data, 5);
   const unavailable = getUnavailableProducts(state.data);
@@ -57,8 +68,8 @@ export default function OverviewPage() {
         <div className="relative z-10 flex flex-wrap items-start justify-between gap-3">
           <PageHeader
             eyebrow={`Operação · ${state.data.business.name}`}
-            title="Sala de comando"
-            description="Panorama da operação atendida por IA, atualizado em tempo real."
+            title="Central operacional"
+            description="Panorama da operação atendida por IA, monitorado em tempo real."
           />
           <div className="flex items-center gap-2">
             <span className="hidden items-center gap-2 rounded-lg border border-accent/25 bg-accent-soft px-2.5 py-1.5 text-xs font-semibold text-accent sm:inline-flex">
@@ -116,6 +127,30 @@ export default function OverviewPage() {
           hint="Simulado"
         />
       </div>
+
+      <SectionCard
+        title="Inteligência da operação"
+        description="Leitura determinística do estado atual — não é IA real"
+        action={<BrainCircuit className="h-4 w-4 text-accent" aria-hidden />}
+      >
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {insights.map((insight) => (
+            <div
+              key={insight.id}
+              className="card-object card-object-hover rounded-xl p-3"
+            >
+              <div className="flex items-center gap-2">
+                <span
+                  className={`h-2 w-2 rounded-full ${INSIGHT_DOT[insight.tone]}`}
+                  aria-hidden
+                />
+                <p className="t-eyebrow text-[10px] uppercase">{insight.label}</p>
+              </div>
+              <p className="mt-1.5 text-sm font-medium text-hi">{insight.detail}</p>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <SectionCard

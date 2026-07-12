@@ -50,8 +50,8 @@ export function MetricCard({
   const styles = TONE[tone];
   return (
     <div
-      className={`relative overflow-hidden rounded-xl p-4 ${
-        highlight ? "panel-priority" : "panel elev-low"
+      className={`relative overflow-hidden rounded-xl p-4 card-object-hover ${
+        highlight ? "panel-priority" : "card-object"
       } before:pointer-events-none before:absolute before:-right-6 before:-top-8 before:h-24 before:w-24 before:rounded-full before:blur-2xl before:content-[''] ${styles.glow}`}
     >
       <div className="relative flex items-start justify-between gap-2">

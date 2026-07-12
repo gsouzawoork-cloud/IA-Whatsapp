@@ -241,3 +241,32 @@ Status.
   tabelas (Abrir/Perfil como pílula com ícone).
 - **Performance/deps:** nenhuma dependência nova; apenas CSS, SVG inline e Tailwind.
 - **Status:** aceita.
+
+## ADR-018 — Base mais clara, fundo vivo e frete determinístico por zona (Fase 1)
+
+- **Contexto:** a base ainda parecia quase-preta e estática, e o frete do pedido
+  era uma taxa fixa sem explicação — pouco crível ("a IA inventa o frete?").
+- **Base cromática mais clara:** superfícies subiram de #08→#0d/#10/#15/#19 (grafite
+  verde-petróleo), bordas levemente esverdeadas, off-white mais quente e acento
+  `#72d6ad`. Mantém dark mode, mas sai do preto chapado.
+- **Fundo vivo (`AmbientBackground`):** camada fixa atrás do conteúdo com base em
+  gradiente, grade técnica mascarada, malha de IA e **auroras difusas** que se
+  deslocam/respiram muito lentamente (16–34s), animando só transform/opacity;
+  `prefers-reduced-motion` desliga o movimento. Sem WebGL/Canvas/imagens.
+- **Cards premium:** `.card-object` + `.card-object-hover` (elevação de 2px, troca
+  de superfície e sombra no hover) aplicados a KPIs e tiles de inteligência.
+- **Frete determinístico (módulo `delivery`):** zonas configuráveis simuladas
+  (`demoDeliveryZones`) e regras puras `resolveDeliveryZone`/`getDeliveryQuote`/
+  `resolveOrderDeliveryFee`. O reducer recalcula a taxa do pedido pela zona a cada
+  mudança de itens/endereço/entrega; a confirmação bloqueia região fora da área e
+  pedido abaixo do mínimo. A UI mostra zona, prazo, mínimo e "frete calculado pelo
+  sistema · a IA apenas informa"; o painel de autonomia reforça "calcula frete pelo
+  sistema" / "não inventa frete / não confirma região indisponível". Uma seção
+  "Entrega e regiões" documenta as zonas. +10 testes (total 60). `DEMO_DATA_VERSION`
+  subiu para 2 (invalida cache antigo sem zonas).
+- **Anti-placar:** hero renomeado para "Central operacional"; bloco "Inteligência da
+  operação" (gargalos/pendências derivados de forma determinística) para leitura de
+  operação, não pontuação.
+- **Preservação:** rotas, estado, seletores, regras existentes e persistência
+  intactos; nenhuma dependência nova.
+- **Status:** aceita.

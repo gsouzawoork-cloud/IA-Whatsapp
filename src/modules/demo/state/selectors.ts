@@ -14,6 +14,11 @@ import {
   calculateOrderSubtotal,
   calculateOrderTotal,
 } from "@/modules/orders/domain/pricing";
+import {
+  getDeliveryQuote,
+  resolveDeliveryZone,
+} from "@/modules/delivery/domain/zones";
+import type { DeliveryQuote } from "@/modules/delivery/types";
 
 /** Filtros disponíveis na lista de conversas. */
 export type ConversationFilter =
@@ -157,6 +162,24 @@ export function getOrderTotals(order: Order): {
     subtotalCents,
     totalCents: calculateOrderTotal(order.items, order.deliveryFeeCents),
   };
+}
+
+/**
+ * Consulta de entrega para um pedido (zona + frete calculados pelo sistema).
+ * Retorna `null` para retirada, sem endereço ou região fora da área.
+ */
+export function getOrderDeliveryQuote(
+  data: DemoData,
+  order: Order,
+): DeliveryQuote | null {
+  if (order.fulfillment !== "delivery" || !order.address) {
+    return null;
+  }
+  const zone = resolveDeliveryZone(data.deliveryZones, order.address.district);
+  if (!zone) {
+    return null;
+  }
+  return getDeliveryQuote(zone, calculateOrderSubtotal(order.items));
 }
 
 /** Pedidos de um cliente, mais recentes primeiro. */

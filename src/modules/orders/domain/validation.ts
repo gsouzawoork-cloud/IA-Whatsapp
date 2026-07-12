@@ -2,21 +2,32 @@
  * Validação de um pedido para confirmação.
  *
  * Regras determinísticas: sem itens, sem endereço (entrega) ou sem forma de
- * pagamento bloqueiam a confirmação; item indisponível também bloqueia.
+ * pagamento bloqueiam a confirmação; item indisponível também bloqueia. Quando
+ * as zonas de entrega são informadas, valida região atendida e pedido mínimo —
+ * a IA nunca confirma entrega para região indisponível.
  */
 
 import { err, ok, type Result } from "@/lib/result";
 import type { Product } from "@/modules/catalog/types";
 import { isProductAvailable } from "@/modules/catalog/domain/availability";
+import type { DeliveryZone } from "@/modules/delivery/types";
+import {
+  getDeliveryQuote,
+  resolveDeliveryZone,
+} from "@/modules/delivery/domain/zones";
+import { formatCurrency } from "@/lib/format";
+import { calculateOrderSubtotal } from "./pricing";
 import type { Order } from "../types";
 
 /**
  * Lista de impedimentos para confirmar um pedido. Vazia significa "pode confirmar".
  * Usada tanto pela validação quanto pela interface (feedback inline).
+ * `zones` opcional: quando fornecida, valida zona de entrega e pedido mínimo.
  */
 export function getOrderConfirmationIssues(
   order: Order,
   products: readonly Product[],
+  zones: readonly DeliveryZone[] = [],
 ): string[] {
   const issues: string[] = [];
 
@@ -61,6 +72,23 @@ export function getOrderConfirmationIssues(
     }
   }
 
+  // Regras de entrega (só quando as zonas são conhecidas e há endereço).
+  if (zones.length > 0 && order.fulfillment === "delivery" && order.address) {
+    const zone = resolveDeliveryZone(zones, order.address.district);
+    if (!zone) {
+      issues.push(
+        "Região fora da área de entrega — transfira para um atendente humano.",
+      );
+    } else {
+      const quote = getDeliveryQuote(zone, calculateOrderSubtotal(order.items));
+      if (!quote.meetsMinimum) {
+        issues.push(
+          `Pedido mínimo para ${zone.name} é ${formatCurrency(zone.minOrderCents)}.`,
+        );
+      }
+    }
+  }
+
   return issues;
 }
 
@@ -68,8 +96,9 @@ export function getOrderConfirmationIssues(
 export function validateOrderForConfirmation(
   order: Order,
   products: readonly Product[],
+  zones: readonly DeliveryZone[] = [],
 ): Result<Order> {
-  const issues = getOrderConfirmationIssues(order, products);
+  const issues = getOrderConfirmationIssues(order, products, zones);
   if (issues.length > 0) {
     return err(issues.join(" "));
   }

@@ -67,7 +67,7 @@ export function Sidebar() {
             >
               {active ? (
                 <span
-                  className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_8px_rgba(105,217,164,0.8)]"
+                  className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_8px_rgba(114,214,173,0.8)]"
                   aria-hidden
                 />
               ) : null}

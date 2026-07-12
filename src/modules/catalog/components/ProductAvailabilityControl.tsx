@@ -45,7 +45,7 @@ export function ProductAvailabilityControl({ product }: { product: Product }) {
           onClick={toggle}
           className={`relative inline-flex h-5 w-9 items-center rounded-full border transition-colors ${
             available
-              ? "border-accent/40 bg-accent/80 shadow-[0_0_10px_rgba(105,217,164,0.4)]"
+              ? "border-accent/40 bg-accent/80 shadow-[0_0_10px_rgba(114,214,173,0.4)]"
               : "border-line bg-white/[0.06]"
           }`}
         >

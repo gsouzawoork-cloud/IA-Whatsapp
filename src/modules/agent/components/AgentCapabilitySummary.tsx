@@ -6,12 +6,15 @@ import type { AgentSettings } from "../types";
 export function AgentCapabilitySummary({ settings }: { settings: AgentSettings }) {
   const can: { label: string; on: boolean }[] = [
     { label: "Consultar produtos", on: settings.canQueryProducts },
+    { label: "Calcular frete pelo sistema", on: true },
     { label: "Criar rascunho de pedido", on: settings.canDraftOrders },
     { label: "Sugerir alternativas", on: settings.canSuggestAlternatives },
     { label: "Informar status", on: settings.canInformStatus },
   ];
   const cannot: string[] = [
     ...(settings.blockPriceChange ? ["Alterar preços"] : []),
+    "Inventar frete de entrega",
+    "Confirmar região fora da área",
     ...(settings.blockDiscounts ? ["Aplicar descontos"] : []),
     "Confirmar pagamentos por comprovante",
     ...(settings.blockRefunds ? ["Executar reembolsos"] : []),

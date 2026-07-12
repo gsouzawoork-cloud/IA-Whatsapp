@@ -2,14 +2,16 @@ import type { ReactNode } from "react";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
 import { MobileNav } from "./MobileNav";
+import { AmbientBackground } from "./AmbientBackground";
 
 /**
- * App shell da plataforma: sidebar no desktop, navegação inferior no celular e
- * topbar operacional, sobre o canvas com iluminação radial discreta.
+ * App shell da plataforma: fundo ambiental vivo, sidebar no desktop, navegação
+ * inferior no celular e topbar operacional.
  */
 export function AppShell({ children }: { children: ReactNode }) {
   return (
-    <div className="app-canvas flex h-dvh text-hi">
+    <div className="relative flex h-dvh text-hi">
+      <AmbientBackground />
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar />

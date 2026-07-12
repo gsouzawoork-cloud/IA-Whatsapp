@@ -12,6 +12,7 @@ import type { Customer } from "@/modules/customers/types";
 import type { Conversation, Message } from "@/modules/conversations/types";
 import type { Order } from "@/modules/orders/types";
 import type { AgentSettings } from "@/modules/agent/types";
+import type { DeliveryZone } from "@/modules/delivery/types";
 
 import { demoBusiness } from "./business";
 import { demoCategories, demoProducts } from "./products";
@@ -20,6 +21,7 @@ import { demoConversations } from "./conversations";
 import { demoMessages } from "./messages";
 import { demoOrders } from "./orders";
 import { demoAgentSettings } from "./agent-settings";
+import { demoDeliveryZones } from "./delivery";
 
 /** Conjunto completo de dados operáveis da demonstração. */
 export interface DemoData {
@@ -31,10 +33,11 @@ export interface DemoData {
   messages: Message[];
   orders: Order[];
   agentSettings: AgentSettings;
+  readonly deliveryZones: readonly DeliveryZone[];
 }
 
 /** Versão do formato dos dados persistidos, para invalidar cache incompatível. */
-export const DEMO_DATA_VERSION = 1;
+export const DEMO_DATA_VERSION = 2;
 
 /** Cria uma cópia profunda e mutável dos dados simulados iniciais. */
 export function createInitialDemoData(): DemoData {
@@ -47,5 +50,6 @@ export function createInitialDemoData(): DemoData {
     messages: demoMessages,
     orders: demoOrders,
     agentSettings: demoAgentSettings,
+    deliveryZones: demoDeliveryZones,
   }) as DemoData;
 }
