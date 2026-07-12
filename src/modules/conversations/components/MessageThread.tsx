@@ -5,7 +5,7 @@ import type { Message, MessageAuthorType } from "../types";
 const BUBBLE_STYLES: Readonly<Record<MessageAuthorType, string>> = {
   customer:
     "bg-surface-3 text-hi border border-line rounded-bl-md elev-low",
-  ai: "bg-accent-soft text-emerald-50 border border-accent/25 rounded-br-md",
+  ai: "bg-ok/10 text-emerald-50 border border-ok/25 rounded-br-md",
   human: "bg-info/12 text-sky-50 border border-info/25 rounded-br-md",
   system: "",
 };

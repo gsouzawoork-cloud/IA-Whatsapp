@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 
 /** Ênfase visual do indicador. */
-export type MetricTone = "neutral" | "accent" | "info" | "attention";
+export type MetricTone = "neutral" | "accent" | "success" | "info" | "attention";
 
 const TONE: Readonly<
   Record<MetricTone, { icon: string; glow: string; value: string }>
@@ -14,6 +14,12 @@ const TONE: Readonly<
   accent: {
     icon: "border-accent/30 bg-accent-soft text-accent",
     glow: "before:bg-accent/[0.07]",
+    value: "text-hi",
+  },
+  // Verde: reservado para IA ativa / sucesso / operação saudável.
+  success: {
+    icon: "border-ok/30 bg-ok/10 text-ok",
+    glow: "before:bg-ok/[0.07]",
     value: "text-hi",
   },
   info: {
@@ -50,8 +56,8 @@ export function MetricCard({
   const styles = TONE[tone];
   return (
     <div
-      className={`relative overflow-hidden rounded-xl p-4 ${
-        highlight ? "panel-priority" : "panel elev-low"
+      className={`relative overflow-hidden rounded-xl p-4 card-object-hover ${
+        highlight ? "panel-priority" : "card-object"
       } before:pointer-events-none before:absolute before:-right-6 before:-top-8 before:h-24 before:w-24 before:rounded-full before:blur-2xl before:content-[''] ${styles.glow}`}
     >
       <div className="relative flex items-start justify-between gap-2">

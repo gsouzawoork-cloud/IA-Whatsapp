@@ -5,6 +5,7 @@ import {
   AlertCircle,
   ArrowRight,
   Bot,
+  BrainCircuit,
   ChefHat,
   ChevronRight,
   Clock,
@@ -17,12 +18,15 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionCard } from "@/components/ui/SectionCard";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { Avatar } from "@/components/ui/Avatar";
+import { AiAmbient } from "@/components/ui/AiAmbient";
 import { formatCurrency, formatDuration, formatElapsed } from "@/lib/format";
 import { useDemo } from "@/modules/demo/state/DemoProvider";
 import {
+  getOperationInsights,
   getOverviewMetrics,
   getRecentOrders,
   getUnavailableProducts,
+  type InsightTone,
 } from "@/modules/demo/state/metrics";
 import { getOrderTotals, listConversations } from "@/modules/demo/state/selectors";
 import { getPreparationQueue } from "@/modules/preparation/domain/queue";
@@ -35,9 +39,17 @@ const REASON: Partial<Record<ConversationStatus, string>> = {
   waiting_human: "Cliente pediu atendente",
 };
 
+const INSIGHT_DOT: Readonly<Record<InsightTone, string>> = {
+  accent: "bg-accent",
+  info: "bg-info",
+  warn: "bg-warn",
+  neutral: "bg-low",
+};
+
 export default function OverviewPage() {
   const { state, actions } = useDemo();
   const metrics = getOverviewMetrics(state.data);
+  const insights = getOperationInsights(state.data);
   const priority = listConversations(state.data, "attention", "").slice(0, 5);
   const recentOrders = getRecentOrders(state.data, 5);
   const unavailable = getUnavailableProducts(state.data);
@@ -50,38 +62,47 @@ export default function OverviewPage() {
   ];
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6 p-4 lg:p-8">
-      <PageHeader
-        eyebrow={`Operação · ${state.data.business.name}`}
-        title="Visão geral"
-        description="Panorama do momento com dados simulados, atualizado em tempo real."
-        actions={
-          <div className="hidden gap-2 sm:flex">
+    <div className="animate-rise mx-auto max-w-7xl space-y-6 p-4 lg:p-8">
+      <div className="panel elev-low relative overflow-hidden rounded-2xl p-5 lg:p-6">
+        <AiAmbient className="opacity-70" />
+        <div className="relative z-10 flex flex-wrap items-start justify-between gap-3">
+          <PageHeader
+            eyebrow={`Operação · ${state.data.business.name}`}
+            title="Central operacional"
+            description="Panorama da operação atendida por IA, monitorado em tempo real."
+          />
+          <div className="flex items-center gap-2">
+            <span className="hidden items-center gap-2 rounded-lg border border-accent/25 bg-accent-soft px-2.5 py-1.5 text-xs font-semibold text-accent sm:inline-flex">
+              <span className="pulse-dot h-2 w-2 rounded-full bg-accent" aria-hidden />
+              Monitorando
+            </span>
             <Link
               href="/app/atendimento"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-strong bg-white/[0.04] px-3 py-2 text-sm font-semibold text-hi transition-colors hover:bg-white/[0.08]"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-strong bg-white/[0.05] px-3 py-2 text-sm font-semibold text-hi transition-all duration-150 hover:-translate-y-px hover:bg-white/[0.09]"
             >
               Atendimento
               <ArrowRight className="h-4 w-4 text-accent" aria-hidden />
             </Link>
           </div>
-        }
-      />
+        </div>
+      </div>
 
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-6">
-        <MetricCard
-          label="Precisam de atenção"
-          value={String(metrics.conversationsNeedingAttention).padStart(2, "0")}
-          hint="Nova(s) + aguardando humano"
-          icon={AlertCircle}
-          tone="attention"
-          highlight={metrics.conversationsNeedingAttention > 0}
-        />
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="col-span-2 lg:col-span-1 xl:col-span-2">
+          <MetricCard
+            label="Precisam de atenção"
+            value={String(metrics.conversationsNeedingAttention).padStart(2, "0")}
+            hint="Nova(s) + aguardando humano"
+            icon={AlertCircle}
+            tone="attention"
+            highlight={metrics.conversationsNeedingAttention > 0}
+          />
+        </div>
         <MetricCard
           label="IA atendendo"
           value={metrics.conversationsWithAI}
           icon={Bot}
-          tone="accent"
+          tone="success"
         />
         <MetricCard
           label="Atendimento humano"
@@ -106,6 +127,30 @@ export default function OverviewPage() {
           hint="Simulado"
         />
       </div>
+
+      <SectionCard
+        title="Inteligência da operação"
+        description="Leitura determinística do estado atual — não é IA real"
+        action={<BrainCircuit className="h-4 w-4 text-purple" aria-hidden />}
+      >
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {insights.map((insight) => (
+            <div
+              key={insight.id}
+              className="card-object card-object-hover rounded-xl p-3"
+            >
+              <div className="flex items-center gap-2">
+                <span
+                  className={`h-2 w-2 rounded-full ${INSIGHT_DOT[insight.tone]}`}
+                  aria-hidden
+                />
+                <p className="t-eyebrow text-[10px] uppercase">{insight.label}</p>
+              </div>
+              <p className="mt-1.5 text-sm font-medium text-hi">{insight.detail}</p>
+            </div>
+          ))}
+        </div>
+      </SectionCard>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <SectionCard

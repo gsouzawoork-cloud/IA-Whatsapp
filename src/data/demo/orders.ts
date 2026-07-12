@@ -38,7 +38,7 @@ export const demoOrders: readonly Order[] = [
       reference: "Portão azul, ao lado da padaria",
     },
     payment: { method: "pix_simulated", status: "not_started" },
-    deliveryFeeCents: 700,
+    deliveryFeeCents: 600,
     availabilityApplied: false,
     createdAt: "2026-07-11T20:38:00-03:00",
     timeline: [
@@ -77,7 +77,7 @@ export const demoOrders: readonly Order[] = [
       city: "São Paulo",
     },
     payment: { method: "pix_simulated", status: "awaiting" },
-    deliveryFeeCents: 700,
+    deliveryFeeCents: 600,
     availabilityApplied: false,
     createdAt: "2026-07-11T20:22:00-03:00",
     timeline: [
@@ -125,7 +125,7 @@ export const demoOrders: readonly Order[] = [
       reference: "Casa dos fundos",
     },
     payment: { method: "pix_simulated", status: "paid" },
-    deliveryFeeCents: 700,
+    deliveryFeeCents: 900,
     availabilityApplied: true,
     createdAt: "2026-07-11T18:50:00-03:00",
     timeline: [
@@ -187,7 +187,7 @@ export const demoOrders: readonly Order[] = [
       status: "pay_on_delivery",
       cardKind: "credit",
     },
-    deliveryFeeCents: 700,
+    deliveryFeeCents: 600,
     availabilityApplied: true,
     createdAt: "2026-07-11T20:05:00-03:00",
     timeline: [
@@ -272,7 +272,7 @@ export const demoOrders: readonly Order[] = [
       status: "pay_on_delivery",
       cardKind: "debit",
     },
-    deliveryFeeCents: 700,
+    deliveryFeeCents: 800,
     availabilityApplied: true,
     createdAt: "2026-07-11T20:24:00-03:00",
     timeline: [
@@ -316,7 +316,7 @@ export const demoOrders: readonly Order[] = [
       city: "São Paulo",
     },
     payment: { method: "pix_simulated", status: "paid" },
-    deliveryFeeCents: 700,
+    deliveryFeeCents: 600,
     availabilityApplied: true,
     createdAt: "2026-07-11T19:40:00-03:00",
     timeline: [
@@ -359,7 +359,7 @@ export const demoOrders: readonly Order[] = [
       city: "São Paulo",
     },
     payment: { method: "pix_simulated", status: "cancelled" },
-    deliveryFeeCents: 700,
+    deliveryFeeCents: 900,
     availabilityApplied: false,
     createdAt: "2026-07-11T19:10:00-03:00",
     timeline: [

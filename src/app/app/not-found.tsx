@@ -14,7 +14,7 @@ export default function AppNotFound() {
       </p>
       <Link
         href="/app"
-        className="mt-1 rounded-lg bg-accent px-4 py-2 text-sm font-bold text-[#06231a] transition-colors hover:bg-accent-hi"
+        className="mt-1 rounded-lg bg-accent px-4 py-2 text-sm font-bold text-[#052733] transition-colors hover:bg-accent-hi"
       >
         Ir para a visão geral
       </Link>

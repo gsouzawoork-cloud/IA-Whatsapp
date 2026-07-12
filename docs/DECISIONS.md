@@ -212,3 +212,93 @@ Status.
 - **Preservação:** rotas, estado, reducers, seletores, regras de domínio, dados
   simulados e os 50 testes permanecem intactos — nenhuma lógica foi alterada.
 - **Status:** aceita.
+
+## ADR-017 — Elevação para experiência enterprise de IA (Fase 1)
+
+- **Contexto:** o dark premium ainda lembrava um dashboard escuro genérico — pouca
+  atmosfera, elevação discreta e ausência de motion. Objetivo: percepção de produto
+  enterprise de IA, sem alterar lógica nem adicionar dependências pesadas.
+- **Atmosfera ambiental:** `.app-canvas` combina base grafite verde-petróleo,
+  halos radiais (verde + teal), grade de pontos técnica quase imperceptível e
+  vinheta — tudo em camadas de background CSS estáticas (sem custo de runtime).
+- **Superfícies tingidas:** tokens de superfície ganharam leve tom verde-petróleo
+  (fim do "preto chapado"); cinco níveis de profundidade e novo `.card-object`
+  (Nível 3) além de `.panel`/`.panel-priority`.
+- **Sombras:** cinco níveis (`--shadow-ambient/low/medium/high` + `--glow-accent`),
+  com brilho interno; aplicadas por hierarquia, não uniformemente.
+- **Cromática:** acento `#69D9A4` (verde-teal) com papéis definidos + apoios teal
+  (`--color-support`) e roxo (`--color-purple`); off-white levemente quente.
+- **Motion:** tokens (`--motion-*`, `--ease-premium`) e utilitários `animate-rise`
+  (entrada de página), `breathe` (IA viva) e `pulse-dot`/`pulse-ring` (operação ao
+  vivo); apenas ~3 elementos com animação infinita, animando só `opacity`/`box-shadow`;
+  `prefers-reduced-motion` desativa todas as animações.
+- **Identidade de IA:** componente `AiAmbient` (SVG inline leve, malha de nós + halo,
+  `aria-hidden`) no header da visão geral, no estado vazio do atendimento e no painel
+  de autonomia. Sem WebGL/Canvas/imagens.
+- **Telas:** visão geral vira "sala de comando" (header ambiental + KPI de atenção
+  dominante); estado vazio do atendimento premium com atalho de prioridade; painel de
+  autonomia da IA imersivo com resumo (habilitadas/bloqueadas); afford. de ação nas
+  tabelas (Abrir/Perfil como pílula com ícone).
+- **Performance/deps:** nenhuma dependência nova; apenas CSS, SVG inline e Tailwind.
+- **Status:** aceita.
+
+## ADR-018 — Base mais clara, fundo vivo e frete determinístico por zona (Fase 1)
+
+- **Contexto:** a base ainda parecia quase-preta e estática, e o frete do pedido
+  era uma taxa fixa sem explicação — pouco crível ("a IA inventa o frete?").
+- **Base cromática mais clara:** superfícies subiram de #08→#0d/#10/#15/#19 (grafite
+  verde-petróleo), bordas levemente esverdeadas, off-white mais quente e acento
+  `#72d6ad`. Mantém dark mode, mas sai do preto chapado.
+- **Fundo vivo (`AmbientBackground`):** camada fixa atrás do conteúdo com base em
+  gradiente, grade técnica mascarada, malha de IA e **auroras difusas** que se
+  deslocam/respiram muito lentamente (16–34s), animando só transform/opacity;
+  `prefers-reduced-motion` desliga o movimento. Sem WebGL/Canvas/imagens.
+- **Cards premium:** `.card-object` + `.card-object-hover` (elevação de 2px, troca
+  de superfície e sombra no hover) aplicados a KPIs e tiles de inteligência.
+- **Frete determinístico (módulo `delivery`):** zonas configuráveis simuladas
+  (`demoDeliveryZones`) e regras puras `resolveDeliveryZone`/`getDeliveryQuote`/
+  `resolveOrderDeliveryFee`. O reducer recalcula a taxa do pedido pela zona a cada
+  mudança de itens/endereço/entrega; a confirmação bloqueia região fora da área e
+  pedido abaixo do mínimo. A UI mostra zona, prazo, mínimo e "frete calculado pelo
+  sistema · a IA apenas informa"; o painel de autonomia reforça "calcula frete pelo
+  sistema" / "não inventa frete / não confirma região indisponível". Uma seção
+  "Entrega e regiões" documenta as zonas. +10 testes (total 60). `DEMO_DATA_VERSION`
+  subiu para 2 (invalida cache antigo sem zonas).
+- **Anti-placar:** hero renomeado para "Central operacional"; bloco "Inteligência da
+  operação" (gargalos/pendências derivados de forma determinística) para leitura de
+  operação, não pontuação.
+- **Preservação:** rotas, estado, seletores, regras existentes e persistência
+  intactos; nenhuma dependência nova.
+- **Status:** aceita.
+
+## ADR-019 — Reequilíbrio cromático (ciano tecnológico) e remoção da estética esportiva
+
+- **Contexto:** o acento único (`--color-accent`) era verde e usado em quase todo
+  elemento interativo (botões, navegação, seleção, foco, KPIs, indicador "ao
+  vivo"), fazendo a interface "verde demais". A malha de nós conectados do fundo
+  de IA também lembrava um campo/tática esportiva, e o rótulo "Ao vivo" soava a
+  transmissão de jogo.
+- **Escolha:** o **verde deixou de ser o acento de interação**. `--color-accent`
+  passa a ser **ciano tecnológico** (`#4ec5e0`) — usado em botões primários, item
+  ativo da navegação, foco, seleção e links. O **verde (`--color-ok`, `#5fd0a2`)
+  é reservado exclusivamente** a: sucesso, disponibilidade de produto e status
+  "IA ativa" (badge da conversa, indicador de responsável, balão de mensagem da
+  IA, toggle de disponibilidade manual). **Violeta (`--color-purple`)** passa a
+  representar automação/inteligência (painel de autonomia da IA, bloco
+  "Inteligência da operação"). Azul-índigo (`--color-info`) permanece para
+  atendimento humano/informação; âmbar e vermelho continuam para atenção e
+  criticidade. Base de superfícies migrou para grafite **azulado** (menos verde
+  residual nas bordas/sombras).
+- **Fim da estética esportiva:** `AiAmbient` foi reescrito — trocou a malha de
+  nós grandes conectados por linhas (que lembrava campo/formação tática) por
+  **fluxos de sinal abstratos** (curvas sobrepostas + partículas discretas),
+  linguagem de processamento/dados. O rótulo "Ao vivo" foi renomeado para
+  **"Monitorando" / "Monitoramento ativo"** (linguagem de monitoramento de
+  sistema, não transmissão).
+- **Motivo:** um único acento dominante em tudo (interação + IA + sucesso)
+  cria monotonia cromática e lê como "verde demais"; separar papéis por cor
+  cria equilíbrio e reforça semântica (o verde agora *significa* algo
+  específico, em vez de decorar tudo).
+- **Preservação:** nenhuma mudança de lógica, dados, rotas ou testes; apenas
+  reclassificação de tokens/classes de cor e um componente decorativo (SVG).
+- **Status:** aceita.

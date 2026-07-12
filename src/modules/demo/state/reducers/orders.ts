@@ -9,10 +9,8 @@
 import type { DemoData } from "@/data/demo";
 import type { Order, OrderItem } from "@/modules/orders/types";
 import type { PaymentDetails, PaymentStatus } from "@/modules/payments/types";
-import {
-  calculateDeliveryFee,
-  calculateOrderTotal,
-} from "@/modules/orders/domain/pricing";
+import { calculateOrderTotal } from "@/modules/orders/domain/pricing";
+import { resolveOrderDeliveryFee } from "@/modules/delivery/domain/zones";
 import {
   canTransitionOrder,
   transitionOrderStatus,
@@ -78,6 +76,26 @@ function quantityOfProduct(order: Order, productId: string): number {
   return order.items
     .filter((item) => item.productId === productId)
     .reduce((total, item) => total + item.quantity, 0);
+}
+
+/**
+ * Recalcula a taxa de entrega do pedido pela zona (sistema calcula, IA não).
+ * Deve ser chamada após alterar itens, endereço ou tipo de entrega.
+ */
+function withDeliveryFee(data: DemoData, orderId: string): DemoData {
+  const order = data.orders.find((o) => o.id === orderId);
+  if (!order) {
+    return data;
+  }
+  const fee = resolveOrderDeliveryFee(
+    order,
+    data.deliveryZones,
+    data.business.defaultDeliveryFeeCents,
+  );
+  if (fee === order.deliveryFeeCents) {
+    return data;
+  }
+  return patchOrder(data, orderId, { deliveryFeeCents: fee });
 }
 
 /** Anexa uma mensagem de sistema à conversa relacionada, se existir. */
@@ -185,7 +203,7 @@ export function ordersReducer(state: DemoState, action: OrderAction): DemoState 
           },
         ];
       }
-      const data = patchOrder(state.data, order.id, { items });
+      const data = withDeliveryFee(patchOrder(state.data, order.id, { items }), order.id);
       return commit(state, { data }, { kind: "success", message: "Item adicionado." });
     }
 
@@ -198,7 +216,7 @@ export function ordersReducer(state: DemoState, action: OrderAction): DemoState 
         return fail(state, "Só é possível editar itens de um rascunho.");
       }
       const items = order.items.filter((item) => item.id !== action.itemId);
-      const data = patchOrder(state.data, order.id, { items });
+      const data = withDeliveryFee(patchOrder(state.data, order.id, { items }), order.id);
       return commit(state, { data }, { kind: "info", message: "Item removido." });
     }
 
@@ -228,7 +246,7 @@ export function ordersReducer(state: DemoState, action: OrderAction): DemoState 
       const items = order.items.map((i) =>
         i.id === item.id ? { ...i, quantity: action.quantity } : i,
       );
-      const data = patchOrder(state.data, order.id, { items });
+      const data = withDeliveryFee(patchOrder(state.data, order.id, { items }), order.id);
       return commit(state, { data }, { kind: "success", message: "Quantidade atualizada." });
     }
 
@@ -240,15 +258,13 @@ export function ordersReducer(state: DemoState, action: OrderAction): DemoState 
       if (!isDraft(order)) {
         return fail(state, "Só é possível alterar a entrega de um rascunho.");
       }
-      const deliveryFeeCents = calculateDeliveryFee(
-        action.fulfillment,
-        state.data.business.defaultDeliveryFeeCents,
+      const data = withDeliveryFee(
+        patchOrder(state.data, order.id, {
+          fulfillment: action.fulfillment,
+          address: action.fulfillment === "pickup" ? undefined : order.address,
+        }),
+        order.id,
       );
-      const data = patchOrder(state.data, order.id, {
-        fulfillment: action.fulfillment,
-        deliveryFeeCents,
-        address: action.fulfillment === "pickup" ? undefined : order.address,
-      });
       return commit(state, { data }, { kind: "info", message: "Tipo de entrega atualizado." });
     }
 
@@ -260,7 +276,10 @@ export function ordersReducer(state: DemoState, action: OrderAction): DemoState 
       if (!isDraft(order)) {
         return fail(state, "Só é possível alterar o endereço de um rascunho.");
       }
-      const data = patchOrder(state.data, order.id, { address: action.address });
+      const data = withDeliveryFee(
+        patchOrder(state.data, order.id, { address: action.address }),
+        order.id,
+      );
       return commit(state, { data }, { kind: "success", message: "Endereço registrado." });
     }
 
@@ -289,7 +308,11 @@ export function ordersReducer(state: DemoState, action: OrderAction): DemoState 
       if (!order) {
         return fail(state, "Pedido não encontrado.");
       }
-      const validation = validateOrderForConfirmation(order, state.data.products);
+      const validation = validateOrderForConfirmation(
+        order,
+        state.data.products,
+        state.data.deliveryZones,
+      );
       if (!validation.ok) {
         return fail(state, validation.error);
       }

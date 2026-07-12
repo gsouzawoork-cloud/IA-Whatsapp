@@ -84,7 +84,7 @@ export function ConversationList() {
                 >
                   {selected ? (
                     <span
-                      className="absolute inset-y-3 left-0 w-0.5 rounded-full bg-accent shadow-[0_0_8px_rgba(126,224,181,0.8)]"
+                      className="absolute inset-y-3 left-0 w-0.5 rounded-full bg-accent shadow-[0_0_8px_rgba(78,197,224,0.8)]"
                       aria-hidden
                     />
                   ) : null}
@@ -94,7 +94,7 @@ export function ConversationList() {
                       <span
                         className={`absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full border border-surface-1 ${
                           conversation.responsible === "ai"
-                            ? "bg-accent-soft text-accent"
+                            ? "bg-ok/15 text-ok"
                             : conversation.responsible === "human"
                               ? "bg-info/20 text-info"
                               : "bg-white/[0.06] text-low"
@@ -129,7 +129,7 @@ export function ConversationList() {
                       <div className="mt-1.5 flex items-center justify-between gap-2">
                         <ConversationStatusBadge status={conversation.status} />
                         {conversation.unreadCount > 0 ? (
-                          <span className="num flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold text-[#06231a]">
+                          <span className="num flex h-4 min-w-4 items-center justify-center rounded-full bg-accent px-1 text-[10px] font-bold text-[#052733]">
                             {conversation.unreadCount}
                           </span>
                         ) : null}

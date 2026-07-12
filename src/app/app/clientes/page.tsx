@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Users } from "lucide-react";
+import { ArrowUpRight, Users } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -38,7 +38,7 @@ export default function ClientesPage() {
   const selectedConversations = selected ? getCustomerConversations(state.data, selected.id) : [];
 
   return (
-    <div className="mx-auto max-w-5xl space-y-4 p-4 lg:p-8">
+    <div className="animate-rise mx-auto max-w-5xl space-y-4 p-4 lg:p-8">
       <PageHeader
         eyebrow="Núcleo · Clientes"
         title="Clientes"
@@ -75,7 +75,7 @@ export default function ClientesPage() {
                     <tr
                       key={customer.id}
                       onClick={() => setSelectedId(customer.id)}
-                      className="cursor-pointer border-b border-subtle transition-colors last:border-0 hover:bg-white/[0.03]"
+                      className="group cursor-pointer border-b border-subtle transition-colors last:border-0 hover:bg-white/[0.03]"
                     >
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2.5">
@@ -106,7 +106,10 @@ export default function ClientesPage() {
                         )}
                       </td>
                       <td className="px-4 py-3 text-right">
-                        <span className="text-xs font-semibold text-accent">Perfil</span>
+                        <span className="inline-flex items-center gap-1 rounded-md border border-line bg-white/[0.03] px-2 py-1 text-xs font-semibold text-mid transition-colors group-hover:border-accent/30 group-hover:text-accent">
+                          Perfil
+                          <ArrowUpRight className="h-3 w-3" aria-hidden />
+                        </span>
                       </td>
                     </tr>
                   );

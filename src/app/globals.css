@@ -1,66 +1,84 @@
 @import "tailwindcss";
 
 /*
- * Sistema visual da plataforma (dark premium, refinamento cromático).
- * Tons grafite/carvão em vez de preto puro; off-white em vez de branco puro;
- * bordas sutis (nunca gritantes); acento verde-azulado sofisticado e seletivo.
+ * Sistema visual enterprise (dark premium, atmosfera de IA).
+ * Base grafite/azul petróleo — carvão frio, sem preto puro dominante.
+ * Acento de INTERAÇÃO é ciano tecnológico (--color-accent); verde (--color-ok)
+ * é reservado a sucesso/disponibilidade/IA ativa; violeta (--color-purple) a
+ * automação/inteligência; nenhuma cor domina a interface inteira.
+ * Cinco níveis de profundidade e motion ambiental sutil (aurora + malha de IA).
  */
 @theme {
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-  /* Superfícies (Nível 0 → 3) — grafite, sem preto absoluto */
-  --color-app: #080b0d;
-  --color-raised: #0b0f12;
-  --color-surface-1: #0f1417;
-  --color-surface-2: #12181c;
-  --color-surface-3: #151c20;
-  --color-surface-active: #192126;
-  /* Campos de entrada: superfície própria, levemente rebaixada */
-  --color-field: #0d1216;
+  /* Superfícies (Nível 0 → 4) — grafite azulado profundo (carvão/azul petróleo) */
+  --color-app: #0a0f14;
+  --color-raised: #0d131a;
+  --color-surface-1: #10161d;
+  --color-surface-2: #141c24;
+  --color-surface-3: #18222b;
+  --color-surface-active: #202d38;
+  --color-card-hover: #1d2833;
+  --color-field: #0f1620;
 
-  /* Bordas — sutis, à base de luz, nunca branco puro */
-  --color-subtle: rgba(255, 255, 255, 0.06);
-  --color-line: rgba(255, 255, 255, 0.09);
-  --color-strong: rgba(255, 255, 255, 0.13);
+  /* Bordas — sutis, frias (azul-acinzentado), nunca gritantes */
+  --color-subtle: rgba(210, 224, 238, 0.07);
+  --color-line: rgba(210, 224, 238, 0.11);
+  --color-strong: rgba(210, 224, 238, 0.17);
 
-  /* Texto — off-white, com brilho decrescente */
-  --color-hi: rgba(255, 255, 255, 0.92);
-  --color-mid: rgba(255, 255, 255, 0.68);
-  --color-low: rgba(255, 255, 255, 0.45);
-  --color-dim: rgba(255, 255, 255, 0.3);
+  /* Texto — off-white frio, brilho decrescente */
+  --color-hi: rgba(240, 246, 251, 0.96);
+  --color-mid: rgba(210, 222, 235, 0.74);
+  --color-low: rgba(188, 202, 218, 0.52);
+  --color-dim: rgba(170, 185, 202, 0.34);
 
-  /* Acento (verde-azulado sofisticado, não neon) */
-  --color-accent: #7ee0b5;
-  --color-accent-hi: #96e8c6;
-  --color-accent-soft: rgba(126, 224, 181, 0.14);
+  /* Acento primário de INTERAÇÃO — ciano tecnológico (não verde) */
+  --color-accent: #4ec5e0;
+  --color-accent-hi: #77d7ec;
+  --color-accent-soft: rgba(78, 197, 224, 0.13);
 
-  /* Apoio discreto (teal acinzentado) */
-  --color-support: #7fb0c6;
+  /* Apoios cromáticos com papéis definidos */
+  --color-support: #8ea6ff;
+  --color-purple: #ae9df4;
 
-  /* Estados semânticos — vivos mas queimados, sem saturação excessiva */
-  --color-ok: #6fd7a6;
-  --color-warn: #e6b45c;
-  --color-bad: #e08277;
-  --color-info: #7fb0d4;
+  /* Estados semânticos — verde só para sucesso/IA/disponibilidade */
+  --color-ok: #5fd0a2;
+  --color-warn: #e5b95d;
+  --color-bad: #e67771;
+  --color-info: #8098ff;
 }
 
 :root {
   color-scheme: light dark;
 
-  --shadow-low: 0 1px 2px rgba(0, 0, 0, 0.35), 0 1px 1px rgba(0, 0, 0, 0.22);
-  --shadow-medium: 0 12px 30px rgba(0, 0, 0, 0.35), 0 3px 8px rgba(0, 0, 0, 0.26),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
-  --shadow-high: 0 28px 64px rgba(0, 0, 0, 0.5), 0 8px 20px rgba(0, 0, 0, 0.32),
+  /* Profundidade — cinco níveis */
+  --shadow-ambient: 0 2px 8px rgba(0, 0, 0, 0.18);
+  --shadow-low: 0 8px 22px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  --shadow-medium: 0 14px 38px rgba(0, 0, 0, 0.28), 0 4px 12px rgba(0, 0, 0, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.045);
-  --glow-accent: 0 0 0 1px rgba(126, 224, 181, 0.16),
-    0 10px 34px -14px rgba(126, 224, 181, 0.28);
+  --shadow-high: 0 24px 60px rgba(0, 0, 0, 0.34), 0 10px 26px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --glow-accent: 0 0 0 1px rgba(78,197,224, 0.16),
+    0 12px 38px -14px rgba(78,197,224, 0.3);
+
+  /* Motion */
+  --motion-fast: 120ms;
+  --motion-default: 180ms;
+  --motion-slow: 260ms;
+  --motion-panel: 320ms;
+  --ease-premium: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 html {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--color-app);
 }
 
 /* Foco sempre visível para navegação por teclado. */
@@ -75,8 +93,7 @@ html {
   *::before,
   *::after {
     transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
+    animation: none !important;
   }
 }
 
@@ -91,25 +108,34 @@ html {
   .elev-high {
     box-shadow: var(--shadow-high);
   }
-  /* Brilho de acento discreto para elementos ativos/prioritários */
   .glow-accent {
     box-shadow: var(--shadow-medium), var(--glow-accent);
   }
 
-  /* Canvas de fundo: grafite + iluminação radial (verde + teal) muito discreta */
-  .app-canvas {
-    background:
-      radial-gradient(
-        1000px circle at 10% -12%,
-        rgba(126, 224, 181, 0.06),
-        transparent 44%
-      ),
-      radial-gradient(
-        820px circle at 100% -4%,
-        rgba(127, 176, 198, 0.045),
-        transparent 40%
-      ),
-      var(--color-app);
+  /* Base do canvas ambiental (o movimento vive em <AmbientBackground>). */
+  .ambient-base {
+    background: linear-gradient(150deg, #0b1119 0%, #0e1620 48%, #0a0f16 100%);
+  }
+  /* Grade técnica quase imperceptível, esmaecida nas bordas. */
+  .tech-grid {
+    background-image: radial-gradient(
+      rgba(210,224,238, 0.05) 1px,
+      transparent 1.4px
+    );
+    background-size: 46px 46px;
+    -webkit-mask-image: radial-gradient(
+      130% 100% at 50% 0%,
+      #000 40%,
+      transparent 85%
+    );
+    mask-image: radial-gradient(130% 100% at 50% 0%, #000 40%, transparent 85%);
+  }
+  /* Blob de aurora difuso (usado no fundo vivo). */
+  .aurora {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(64px);
+    will-change: transform, opacity;
   }
 
   /* Painel (Nível 2): superfície própria + brilho superior sutil */
@@ -117,7 +143,7 @@ html {
     background:
       linear-gradient(
         180deg,
-        rgba(255, 255, 255, 0.022),
+        rgba(255, 255, 255, 0.024),
         rgba(255, 255, 255, 0) 58%
       ),
       var(--color-surface-2);
@@ -125,13 +151,35 @@ html {
     border-radius: 14px;
   }
 
-  /* Elemento prioritário (Nível 3): mais claro, elevado, com luz interna */
-  .panel-priority {
+  /* Card operacional (Nível 3): objeto sobre a interface, com hover elevado */
+  .card-object {
     background:
       linear-gradient(
         180deg,
         rgba(255, 255, 255, 0.04),
-        rgba(255, 255, 255, 0.008) 62%
+        rgba(255, 255, 255, 0.01) 60%
+      ),
+      var(--color-surface-3);
+    border: 1px solid var(--color-line);
+    box-shadow: var(--shadow-low);
+    transition:
+      transform var(--motion-default) var(--ease-premium),
+      box-shadow var(--motion-default) var(--ease-premium),
+      background-color var(--motion-default) var(--ease-premium);
+  }
+  .card-object-hover:hover {
+    transform: translateY(-2px);
+    background-color: var(--color-card-hover);
+    box-shadow: var(--shadow-high);
+  }
+
+  /* Elemento crítico (Nível 4): mais claro, elevado, luz interna */
+  .panel-priority {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.01) 62%
       ),
       var(--color-surface-active);
     border: 1px solid var(--color-strong);
@@ -142,46 +190,46 @@ html {
   .field {
     background: var(--color-field);
     border: 1px solid var(--color-line);
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.35);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
   }
   .field:focus {
-    border-color: rgba(126, 224, 181, 0.5);
+    border-color: rgba(78,197,224, 0.5);
     box-shadow:
-      inset 0 1px 2px rgba(0, 0, 0, 0.35),
-      0 0 0 1px rgba(126, 224, 181, 0.35);
+      inset 0 1px 2px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(78,197,224, 0.35);
     outline: none;
   }
 
   /* Barra de rolagem discreta para áreas operacionais */
   .scroll-slim {
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+    scrollbar-color: rgba(210,224,238, 0.12) transparent;
   }
   .scroll-slim::-webkit-scrollbar {
     width: 10px;
     height: 10px;
   }
   .scroll-slim::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.09);
+    background: rgba(210,224,238, 0.1);
     border-radius: 9px;
     border: 2px solid transparent;
     background-clip: padding-box;
   }
   .scroll-slim::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.16);
+    background: rgba(210,224,238, 0.18);
     background-clip: padding-box;
   }
 
   /* Escala tipográfica (pesos fortes via Manrope variável) */
   .t-page-title {
     font-weight: 800;
-    letter-spacing: -0.022em;
-    line-height: 1.08;
+    letter-spacing: -0.028em;
+    line-height: 1.05;
     color: var(--color-hi);
   }
   .t-section {
     font-weight: 700;
-    letter-spacing: -0.012em;
+    letter-spacing: -0.014em;
     color: var(--color-hi);
   }
   .t-kpi {
@@ -193,22 +241,55 @@ html {
   }
   .t-eyebrow {
     font-weight: 650;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.04em;
     color: var(--color-low);
   }
   .num {
     font-variant-numeric: tabular-nums;
   }
 
-  /* Entradas discretas (drawer, overlay) — respeitam reduced-motion. */
+  /* ---- Motion ---- */
+  .animate-rise {
+    animation: rise var(--motion-slow) var(--ease-premium) both;
+  }
   .animate-fade-in {
-    animation: fade-in 180ms ease-out;
+    animation: fade-in var(--motion-default) ease-out;
   }
   .animate-drawer-in {
-    animation: drawer-in 200ms cubic-bezier(0.22, 1, 0.36, 1);
+    animation: drawer-in var(--motion-panel) var(--ease-premium);
   }
   .animate-pop-in {
     animation: pop-in 160ms ease-out;
+  }
+  .aurora-drift-a {
+    animation: aurora-a 26s ease-in-out infinite;
+  }
+  .aurora-drift-b {
+    animation: aurora-b 34s ease-in-out infinite;
+  }
+  .breathe {
+    animation: breathe 5s ease-in-out infinite;
+  }
+  .pulse-dot {
+    position: relative;
+  }
+  .pulse-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    animation: pulse-ring 2.6s ease-out infinite;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -238,5 +319,52 @@ html {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(78,197,224, 0.35);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(78,197,224, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(78,197,224, 0);
+  }
+}
+
+/* Aurora ambiental: deslocamento e respiração muito lentos (transform/opacity). */
+@keyframes aurora-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate3d(5%, 4%, 0) scale(1.1);
+    opacity: 0.9;
+  }
+}
+
+@keyframes aurora-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translate3d(-4%, -3%, 0) scale(1);
+    opacity: 0.75;
   }
 }

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { formatCurrency, formatTime } from "@/lib/format";
 import { useDemo } from "@/modules/demo/state/DemoProvider";
-import { getOrderTotals } from "@/modules/demo/state/selectors";
+import { getOrderDeliveryQuote, getOrderTotals } from "@/modules/demo/state/selectors";
 import { getOrderConfirmationIssues } from "../domain/validation";
 import { canTransitionOrder, getNextPreparationStatus } from "../domain/transitions";
 import { FULFILLMENT_LABELS, ORDER_STATUS_LABELS } from "../labels";
@@ -28,7 +28,14 @@ export function OrderEditor({ order }: { order: Order }) {
   const [confirmCancel, setConfirmCancel] = useState(false);
 
   const { subtotalCents, totalCents } = getOrderTotals(order);
-  const issues = getOrderConfirmationIssues(order, state.data.products);
+  const issues = getOrderConfirmationIssues(
+    order,
+    state.data.products,
+    state.data.deliveryZones,
+  );
+  const deliveryQuote = getOrderDeliveryQuote(state.data, order);
+  const outOfArea =
+    order.fulfillment === "delivery" && Boolean(order.address) && !deliveryQuote;
   const isDraft = order.status === "draft";
   const nextStatus = getNextPreparationStatus(order.status, order.fulfillment);
   const canCancel = canTransitionOrder(order.status, "cancelled");
@@ -73,6 +80,39 @@ export function OrderEditor({ order }: { order: Order }) {
         <div>
           <Label>Endereço de entrega</Label>
           <AddressEditor order={order} />
+
+          {/* Frete calculado pelo sistema (a IA apenas consulta e informa). */}
+          {!order.address ? (
+            <p className="mt-2 rounded-lg border border-line bg-white/[0.02] px-3 py-2 text-xs text-low">
+              Aguardando endereço — o sistema calcula o frete pela zona do bairro.
+            </p>
+          ) : deliveryQuote ? (
+            <div className="mt-2 rounded-lg border border-line bg-white/[0.02] p-3 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-hi">
+                  Zona {deliveryQuote.zone.name}
+                </span>
+                {deliveryQuote.freeApplied ? (
+                  <span className="font-semibold text-accent">Frete grátis</span>
+                ) : (
+                  <span className="num font-semibold text-hi">
+                    {formatCurrency(deliveryQuote.feeCents)}
+                  </span>
+                )}
+              </div>
+              <p className="mt-1 text-low">
+                Prazo {deliveryQuote.etaMinMinutes}–{deliveryQuote.etaMaxMinutes} min ·
+                mínimo {formatCurrency(deliveryQuote.minOrderCents)}
+              </p>
+              <p className="mt-1 text-dim">
+                Frete calculado pelo sistema · a IA apenas informa.
+              </p>
+            </div>
+          ) : (
+            <p className="mt-2 rounded-lg border border-warn/30 bg-warn/[0.07] px-3 py-2 text-xs text-warn">
+              Região fora da área de entrega — transferir para um atendente.
+            </p>
+          )}
         </div>
       ) : null}
 
@@ -86,7 +126,13 @@ export function OrderEditor({ order }: { order: Order }) {
         {order.fulfillment === "delivery" ? (
           <div className="flex justify-between text-low">
             <span>Taxa de entrega</span>
-            <span className="num text-mid">{formatCurrency(order.deliveryFeeCents)}</span>
+            <span className="num text-mid">
+              {outOfArea
+                ? "—"
+                : deliveryQuote?.freeApplied
+                  ? "Grátis"
+                  : formatCurrency(order.deliveryFeeCents)}
+            </span>
           </div>
         ) : null}
         <div className="flex justify-between border-t border-subtle pt-1.5 text-base font-bold text-hi">

@@ -5,7 +5,7 @@ export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 
 const VARIANT_CLASSES: Readonly<Record<ButtonVariant, string>> = {
   primary:
-    "bg-accent text-[#06231a] font-bold shadow-[0_6px_18px_-6px_rgba(126,224,181,0.55)] hover:bg-accent-hi hover:-translate-y-px active:translate-y-0 focus-visible:ring-accent/60",
+    "bg-accent text-[#052733] font-bold shadow-[0_6px_18px_-6px_rgba(78,197,224,0.55)] hover:bg-accent-hi hover:-translate-y-px active:translate-y-0 focus-visible:ring-accent/60",
   secondary:
     "border border-strong bg-white/[0.04] text-hi hover:bg-white/[0.08] hover:-translate-y-px active:translate-y-0 focus-visible:ring-white/30",
   ghost:
