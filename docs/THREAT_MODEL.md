@@ -76,3 +76,46 @@ existem, e deixam de ser aceitáveis assim que a fase correspondente for iniciad
 - **Fase 5:** verificação de webhooks do WhatsApp, replay, spam.
 - **Fase 6:** pagamentos, idempotência de cobranças, confirmação por provedor.
 - **Fase 8:** revisão completa, checklist de produção, resposta a incidentes.
+
+---
+
+## Atualização — Fase 3 (fundação SaaS real)
+
+Com autenticação, banco e multi-tenancy, a superfície de ataque cresce. Modelo
+resumido:
+
+### Ativos
+- Dados de cada empresa (clientes, catálogo, pedidos, conversas, configurações).
+- Sessões e credenciais de usuários.
+- Segredos de infraestrutura (service role, connection string) — fora da app.
+
+### Atores
+- Usuário legítimo de uma empresa (owner/admin/manager/agent/viewer).
+- Usuário legítimo de OUTRA empresa (ameaça de vazamento cross-tenant).
+- Anônimo/não autenticado.
+- Futuro: IA e webhooks externos (fases posteriores).
+
+### Superfícies
+- Rotas `/auth/*`, `/onboarding`, `/app/*` e Server Actions.
+- API PostgREST do Supabase (acessível com a publishable key).
+
+### Ameaças e controles
+
+| Ameaça | Controle |
+| --- | --- |
+| Vazamento cross-tenant (empresa A lê empresa B) | RLS em todas as tabelas; funções `SECURITY DEFINER` sem recursão; ver `MULTI_TENANCY.md` |
+| IDOR por UUID | RLS exige membership; conhecer o ID não basta |
+| Escalada de privilégio | Trigger anti-auto-elevação; escrita de membership só owner/admin |
+| Mass assignment | Allowlists explícitas de campos nas atualizações |
+| "Migração" de registro entre empresas | Trigger de imutabilidade de `organization_id` |
+| Manipulação de total/frete no navegador | Recalculados no servidor a partir do banco |
+| Exposição de segredo | Apenas `NEXT_PUBLIC_*` no cliente; service role nunca usada pela app |
+| Vazamento em logs | Sanitização de metadados de auditoria |
+| Enumeração de contas | Mensagens genéricas em login/recuperação |
+
+### Riscos remanescentes (honestos)
+- **Rate limiting** ainda não implementado (login, recuperação) — documentado
+  em `SECURITY_LEARNING_NOTES.md`; depende da fase de webhooks/IA.
+- **Testes de RLS (pgTAP)** criados mas não executados neste ambiente.
+- **CSP/headers** de segurança ainda não endurecidos — item de fase de produção.
+- O sistema **não** é certificado nem invulnerável; esta é uma fundação.
