@@ -13,7 +13,7 @@ export default function AppNotFound() {
         Esta rota do painel não existe na demonstração. Volte para a visão geral.
       </p>
       <Link
-        href="/app"
+        href="/demo"
         className="mt-1 rounded-lg bg-accent px-4 py-2 text-sm font-bold text-[#052733] transition-colors hover:bg-accent-hi"
       >
         Ir para a visão geral

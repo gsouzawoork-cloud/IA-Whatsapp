@@ -14,6 +14,15 @@ apenas os módulos de que precisa (pedidos, catálogo, agenda, orçamentos, etc.
 
 O WhatsApp é o **canal**. A plataforma é a **central de operação** da empresa.
 
+> **Fase 3 (fundação SaaS real):** autenticação, PostgreSQL, multi-tenancy com
+> RLS, papéis/permissões, onboarding, catálogo/entrega/agente reais e motor
+> determinístico já estão implementados. Rotas: `/demo/*` (demonstração pública,
+> dados fictícios), `/auth/*` (login/cadastro) e `/app/*` (aplicação real,
+> protegida). Veja `docs/PHASE_3_SAAS_FOUNDATION.md`, `docs/MULTI_TENANCY.md`,
+> `docs/DETERMINISTIC_TOOLS.md`, `docs/SECURITY_LEARNING_NOTES.md` e
+> `docs/SUPABASE_SETUP.md`. Sem Supabase configurado, o build funciona e a demo
+> segue acessível.
+
 > O produto **não** é um chatbot: é uma central de atendimento e operação em que
 > a IA interpreta necessidades, consulta informações oficiais e usa ferramentas
 > controladas pela aplicação — que valida e executa cada ação.

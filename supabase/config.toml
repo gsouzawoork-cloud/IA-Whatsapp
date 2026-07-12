@@ -1,0 +1,19 @@
+# Configuração da Supabase CLI para desenvolvimento LOCAL.
+# Não contém segredos. Ajuste conforme necessário com `supabase init`/`supabase start`.
+project_id = "central-ia"
+
+[db]
+major_version = 15
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[auth]
+enable_signup = true
+# URL do site local para redirects de e-mail em desenvolvimento.
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["http://localhost:3000/auth/confirmacao"]
+
+[auth.email]
+enable_confirmations = false

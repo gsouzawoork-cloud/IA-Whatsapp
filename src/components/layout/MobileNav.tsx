@@ -7,15 +7,15 @@ import { Menu, X } from "lucide-react";
 import { NAV_ITEMS } from "@/modules/demo/navigation";
 
 function isActive(pathname: string, href: string): boolean {
-  if (href === "/app") {
-    return pathname === "/app";
+  if (href === "/demo") {
+    return pathname === "/demo";
   }
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 /** Rótulo curto para a barra inferior. */
 function mobileLabel(href: string, label: string): string {
-  return href === "/app" ? "Início" : label;
+  return href === "/demo" ? "Início" : label;
 }
 
 /** Navegação inferior do celular, com um menu "Mais" para itens secundários. */
