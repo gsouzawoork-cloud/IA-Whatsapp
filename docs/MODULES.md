@@ -4,8 +4,23 @@ A plataforma se organiza em um **núcleo universal** (sempre presente) e
 **módulos opcionais** (habilitados por empresa). O contrato tipado que
 materializa esta fronteira já existe em código: [`src/core/modules.ts`](../src/core/modules.ts).
 
-> Nesta fase há apenas o contrato e uma verificação de capacidade pura. Não há
-> banco, navegação funcional nem autorização real — isso chega nas Fases 2+.
+> O contrato de capacidade e a verificação pura vivem em `src/core/modules.ts`.
+> Na **Fase 1 (protótipo simulado)** a navegação passou a refletir apenas os
+> módulos ativos da demonstração — mas a autorização real (backend) continua
+> prevista para as Fases 2+.
+
+## Módulos ativos na demonstração (Fase 1)
+
+A demonstração da pizzaria (Pizzaria Forno Alto) habilita os módulos opcionais
+`orders`, `catalog`, `availability`, `payments`, `preparation` e `delivery`
+(ver `DEMO_ENABLED_MODULES` em `src/modules/demo/navigation.ts`), além de todo o
+núcleo (atendimento, conversas, clientes, configuração da IA). A navegação do
+painel expõe: Visão geral, Atendimento, Pedidos, Fila de preparo, Produtos,
+Clientes e Configuração da IA. Módulos não habilitados (ex.: agenda, orçamentos)
+**não** aparecem na navegação. Pagamentos são **simulados dentro do pedido** —
+não há gestão financeira independente. A verificação de capacidade continua
+determinística; a simulação apenas antecipa como a navegação adaptável se
+comportará quando a autorização real existir.
 
 ## Núcleo universal
 

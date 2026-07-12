@@ -120,3 +120,95 @@ Status.
 - **Motivo:** a própria tarefa proíbe pastas vazias e interfaces fictícias.
 - **Consequências:** o diretório de domínios nasce com o primeiro domínio (Fase 3).
 - **Status:** aceita.
+
+## ADR-012 — Estado da demonstração com Context + `useReducer` (Fase 1)
+
+- **Contexto:** o protótipo simulado precisa de estado compartilhado e reativo
+  (conversas, pedidos, disponibilidade) sem backend.
+- **Alternativas:** Zustand/Redux/Jotai; estado local espalhado por página.
+- **Escolha:** React Context + `useReducer`, com reducer raiz delegando a
+  sub-reducers coesos por domínio (`conversations`, `orders`, `catalog`, `agent`).
+- **Motivo:** recursos nativos bastam; evita dependência de estado global e mantém
+  as fronteiras de domínio. O reducer é puro (recebe `meta` com horário/id gerados
+  na borda), o que o torna determinístico e testável.
+- **Consequências:** feedback de ações é determinístico (campo no estado) e a
+  interface o traduz em toasts. `src/modules/demo/state/` separa estado, ações,
+  reducer, seletores, métricas e persistência.
+- **Status:** aceita.
+
+## ADR-013 — Dados simulados centralizados e regras puras de domínio (Fase 1)
+
+- **Contexto:** o protótipo exige dados realistas e regras determinísticas (preço,
+  total, disponibilidade, transições) fora dos componentes.
+- **Alternativas:** arrays dentro de componentes; lógica em JSX.
+- **Escolha:** dados em `src/data/demo/` (fonte `readonly`, cópia mutável via
+  `structuredClone`); regras puras em `src/modules/<domínio>/domain`, tipadas e
+  testadas com Vitest.
+- **Motivo:** separação interface × regra de negócio; as mesmas fronteiras da versão
+  real (backend valida/calcula) são respeitadas na simulação.
+- **Consequências:** 50 testes cobrem disponibilidade, pedidos, pagamento, fila e
+  conversas. A IA simulada apenas consulta/solicita — nunca decide preço/estoque.
+- **Status:** aceita.
+
+## ADR-014 — Persistência local opcional com `localStorage` (Fase 1)
+
+- **Contexto:** manter a demonstração após recarregar a página, sem banco.
+- **Alternativas:** somente estado de sessão (memória).
+- **Escolha:** persistir os dados em `localStorage` (chave com namespace e versão),
+  com validação de formato e fallback aos dados iniciais; botão "Restaurar
+  demonstração" limpa e recarrega.
+- **Motivo:** melhora a experiência de teste sem introduzir backend.
+- **Consequências:** persistência é best-effort (falhas de cota toleradas); nada
+  sensível é gravado; hidratação ocorre só no cliente para evitar divergência.
+- **Status:** aceita.
+
+## ADR-015 — Limite Client/Server e dependências da Fase 1
+
+- **Contexto:** o painel é interativo e compartilha estado em memória; a página
+  institucional e o layout raiz não precisam de interação.
+- **Alternativas:** tudo Client; ou forçar Server onde exigiria contornos.
+- **Escolha:** `/` e `/demo` e o layout raiz permanecem Server Components; a subárvore
+  `/app/*` é um limite Client (envolta pelo `DemoProvider`). Dependências adicionadas:
+  `lucide-react` (ícones, consistência visual) e `vitest` (testes de regras puras) —
+  ambas permitidas pelo escopo.
+- **Motivo:** manter o máximo de conteúdo estático, isolando a interatividade do
+  protótipo em um provider único. Valores monetários trafegam em centavos (inteiros)
+  para cálculos determinísticos.
+- **Consequências:** a demonstração roda no cliente; a Fase 2 substituirá o estado em
+  memória por persistência real com isolamento multiempresa.
+- **Status:** aceita.
+
+## ADR-016 — Redesign visual premium da central operacional (Fase 1)
+
+- **Contexto:** a interface funcional da Fase 1 estava chapada, com pouca
+  profundidade e hierarquia fraca — parecia uma ferramenta interna, não uma
+  plataforma SaaS premium. Refatoração puramente visual, sem alterar lógica.
+- **Direção visual:** central operacional escura, tecnológica e tridimensional;
+  profundidade por camadas e contraste, não por sombras pesadas uniformes.
+- **Sistema de tokens (`globals.css`, Tailwind v4 `@theme`):** superfícies em quatro
+  níveis (`app` → `surface-1/2/3` → `surface-active`), bordas graduadas
+  (`subtle`/`line`/`strong`), texto hierárquico (`hi`/`mid`/`low`/`dim`), acento
+  verde-azulado seletivo (`accent`) e semânticos (`ok`/`warn`/`bad`/`info`).
+  Substitui hexadecimais espalhados por utilitários (`bg-surface-2`, `text-mid`, …).
+- **Profundidade/elevação:** sombras multicamada em três níveis
+  (`--shadow-low/medium/high`) expostas como `.elev-low/medium/high`; painéis
+  `.panel` (Nível 2) e `.panel-priority` (Nível 3, com luz interna) para elementos
+  prioritários; canvas `.app-canvas` com iluminação radial discreta. Sem glow global.
+- **Tipografia:** Manrope (variável) via `next/font/google` — auto-hospedada no
+  build, **sem arquivos de fonte no repositório** e sem requisição em runtime;
+  exposta como `--font-manrope` e consumida pelo token `--font-sans`. Escala de
+  pesos fortes com `tabular-nums` para números/KPIs (`.t-page-title`, `.t-kpi`, …).
+- **Identidade dupla:** marca da plataforma (`PlatformBrand` — "Central IA") separada
+  da empresa conectada (cápsula da Pizzaria Forno Alto) na sidebar.
+- **Responsividade:** grid de três áreas no atendimento (desktop), drawer de contexto
+  no mobile; tabelas com container de rolagem próprio; navegação inferior no celular.
+- **Microinterações:** hover elevando 1–2px, transições de 150–200ms, entradas de
+  drawer/overlay por keyframes CSS; `prefers-reduced-motion` encurta todas as durações.
+- **Acessibilidade:** foco visível baseado no acento, selos com ponto além da cor,
+  switches/tabs como botões reais, drawers com `aria-modal`/foco, alvos de toque
+  adequados; contraste elevado sobre o fundo escuro.
+- **Dependências:** adicionada `next/font` (Manrope, sem custo de runtime); `lucide-react`
+  reutilizada. Nenhuma biblioteca de UI, animação, gráficos ou tabelas foi adicionada.
+- **Preservação:** rotas, estado, reducers, seletores, regras de domínio, dados
+  simulados e os 50 testes permanecem intactos — nenhuma lógica foi alterada.
+- **Status:** aceita.

@@ -81,8 +81,75 @@ src/
 
 - `core/` guarda fundações **transversais** usadas por todos os domínios (ex.: o
   contrato de módulos/capacidades). Não é um domínio.
-- `modules/` (a ser criado) guardará o **código de cada domínio** de negócio.
+- `modules/` guarda o **código de cada domínio** de negócio (criado na Fase 1).
 - `lib/` guarda utilitários e configuração da aplicação.
+
+## Protótipo simulado (Fase 1)
+
+A Fase 1 transforma a fundação em um protótipo navegável e operável com **dados
+simulados** e **regras determinísticas locais** — sem backend, banco, IA, WhatsApp
+ou pagamentos reais.
+
+### Organização por domínio
+
+```
+src/
+  app/
+    demo/                  # entrada do ambiente simulado
+    app/                   # painel (limite Client): visão geral, atendimento,
+                           # pedidos, produtos, clientes, fila, configuração da IA
+  components/
+    layout/                # AppShell, Sidebar, MobileNav, Topbar, DemoBanner
+    ui/                    # Badge, Button, ConfirmDialog, Toast, EmptyState, …
+  data/demo/               # dados simulados centralizados (fonte readonly)
+  modules/
+    business|customers|conversations|catalog|availability|orders|payments|
+    preparation|agent/     # cada domínio: types · domain (regras puras) · components
+    demo/state/            # estado da demonstração (Context + useReducer)
+  lib/                     # format, result (utilitários transversais)
+```
+
+### Camada de domínio (regras puras)
+
+Cada domínio expõe funções **puras, tipadas e testadas**, sem React, sem `window`
+e sem mutação direta: transições de conversa e de pedido, cálculo de subtotal/taxa/
+total, validação para confirmação, disponibilidade (`isProductAvailable`,
+`canAddProductToOrder`, aplicar/restaurar na confirmação/cancelamento com proteção
+contra duplo desconto), pagamento (validação e troco) e tempo estimado da fila. Elas
+retornam um `Result<T>` explícito (`src/lib/result.ts`) em vez de lançar exceções em
+fluxos previsíveis. Cobertura: 50 testes (Vitest).
+
+### Estado da demonstração
+
+`src/modules/demo/state/` mantém uma **fonte única coordenada** dividida em módulos:
+`types` (ações e estado), `reducer` (raiz) delegando a **sub-reducers** coesos
+(`reducers/conversations|orders|catalog|agent`), `selectors`, `metrics` e
+`persistence`. O reducer é **puro**: ações que mutam dados carregam `meta`
+(horário/id gerados na borda pelo `DemoProvider`), evitando `Date`/`random` dentro do
+reducer. Toda operação é imutável; regras de domínio são reutilizadas pelos
+sub-reducers. O feedback de cada ação é determinístico (campo no estado) e a interface
+o traduz em toasts.
+
+### Client vs Server Components
+
+`/` (institucional), `/demo` e o layout raiz são **Server Components**. A subárvore
+`/app/*` é um **limite Client**, envolta pelo `DemoProvider`, porque o protótipo é
+interativo e compartilha estado em memória. Componentes de apresentação não importam
+regras cruas de dados sem validação, e regras críticas não vivem em JSX.
+
+### Persistência simulada
+
+Os dados são persistidos em `localStorage` (chave com namespace + versão), com
+validação de formato e fallback aos dados iniciais; a hidratação ocorre apenas no
+cliente para evitar divergência de SSR. "Restaurar demonstração" limpa e recarrega os
+dados. Persistência é best-effort e não grava nada sensível.
+
+### Limitações da fase
+
+Sem multiempresa funcional, autenticação, auditoria persistente ou integrações
+externas. Valores monetários trafegam em **centavos** (inteiros) para cálculos
+determinísticos. A verificação de capacidade por módulo é refletida na navegação, mas
+a autorização real (backend) chega nas Fases 2+.
 
 ## Contexto empresarial (multiempresa)
 
