@@ -74,7 +74,7 @@ export default function OverviewPage() {
           <div className="flex items-center gap-2">
             <span className="hidden items-center gap-2 rounded-lg border border-accent/25 bg-accent-soft px-2.5 py-1.5 text-xs font-semibold text-accent sm:inline-flex">
               <span className="pulse-dot h-2 w-2 rounded-full bg-accent" aria-hidden />
-              Ao vivo
+              Monitorando
             </span>
             <Link
               href="/app/atendimento"
@@ -102,7 +102,7 @@ export default function OverviewPage() {
           label="IA atendendo"
           value={metrics.conversationsWithAI}
           icon={Bot}
-          tone="accent"
+          tone="success"
         />
         <MetricCard
           label="Atendimento humano"
@@ -131,7 +131,7 @@ export default function OverviewPage() {
       <SectionCard
         title="Inteligência da operação"
         description="Leitura determinística do estado atual — não é IA real"
-        action={<BrainCircuit className="h-4 w-4 text-accent" aria-hidden />}
+        action={<BrainCircuit className="h-4 w-4 text-purple" aria-hidden />}
       >
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {insights.map((insight) => (

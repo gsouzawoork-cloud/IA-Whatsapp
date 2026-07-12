@@ -17,7 +17,7 @@ export function Topbar() {
     <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-subtle bg-surface-1/60 px-4 backdrop-blur">
       {/* Celular: identidade da empresa. */}
       <div className="flex items-center gap-2 lg:hidden">
-        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-b from-accent to-emerald-600 text-[11px] font-extrabold text-[#06231a]">
+        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-b from-accent to-info text-[11px] font-extrabold text-[#052733]">
           {business.monogram}
         </span>
         <span className="truncate text-sm font-bold text-hi">{business.name}</span>
@@ -28,7 +28,7 @@ export function Topbar() {
         <span className="inline-flex items-center gap-2 rounded-lg border border-line bg-white/[0.03] px-3 py-1.5 text-xs text-mid elev-low">
           <span className="pulse-dot h-2 w-2 rounded-full bg-accent" aria-hidden />
           <Activity className="h-3.5 w-3.5 text-accent" aria-hidden />
-          Operação ao vivo
+          Monitoramento ativo
           <span className="mx-1 h-3 w-px bg-strong" aria-hidden />
           <span className="num font-semibold text-hi">{attention}</span>
           <span className="text-low">precisam de atenção</span>

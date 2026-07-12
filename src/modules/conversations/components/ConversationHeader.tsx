@@ -68,7 +68,7 @@ export function ConversationHeader({
           <span
             className={`hidden items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-semibold sm:inline-flex ${
               conversation.responsible === "ai"
-                ? "border-accent/30 bg-accent-soft text-accent"
+                ? "border-ok/30 bg-ok/10 text-ok"
                 : conversation.responsible === "human"
                   ? "border-info/30 bg-info/10 text-info"
                   : "border-line text-low"

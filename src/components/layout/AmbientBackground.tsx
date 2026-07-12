@@ -22,7 +22,7 @@ export function AmbientBackground() {
           width: "48rem",
           height: "48rem",
           background:
-            "radial-gradient(circle, rgba(114,214,173,0.16), transparent 62%)",
+            "radial-gradient(circle, rgba(78,197,224,0.16), transparent 62%)",
         }}
       />
       <div
@@ -33,18 +33,18 @@ export function AmbientBackground() {
           width: "44rem",
           height: "44rem",
           background:
-            "radial-gradient(circle, rgba(101,201,211,0.1), transparent 62%)",
+            "radial-gradient(circle, rgba(174,157,244,0.11), transparent 62%)",
         }}
       />
       <div
         className="aurora aurora-drift-a"
         style={{
-          top: "40%",
-          left: "38%",
+          top: "38%",
+          left: "40%",
           width: "34rem",
           height: "34rem",
           background:
-            "radial-gradient(circle, rgba(83,139,174,0.07), transparent 60%)",
+            "radial-gradient(circle, rgba(70,120,175,0.08), transparent 60%)",
           animationDelay: "-12s",
         }}
       />

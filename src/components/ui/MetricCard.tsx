@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 
 /** Ênfase visual do indicador. */
-export type MetricTone = "neutral" | "accent" | "info" | "attention";
+export type MetricTone = "neutral" | "accent" | "success" | "info" | "attention";
 
 const TONE: Readonly<
   Record<MetricTone, { icon: string; glow: string; value: string }>
@@ -14,6 +14,12 @@ const TONE: Readonly<
   accent: {
     icon: "border-accent/30 bg-accent-soft text-accent",
     glow: "before:bg-accent/[0.07]",
+    value: "text-hi",
+  },
+  // Verde: reservado para IA ativa / sucesso / operação saudável.
+  success: {
+    icon: "border-ok/30 bg-ok/10 text-ok",
+    glow: "before:bg-ok/[0.07]",
     value: "text-hi",
   },
   info: {

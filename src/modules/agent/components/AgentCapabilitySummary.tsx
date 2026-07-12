@@ -26,7 +26,7 @@ export function AgentCapabilitySummary({ settings }: { settings: AgentSettings }
     <div className="panel-priority relative overflow-hidden rounded-2xl p-4">
       <AiAmbient className="opacity-60" />
       <div className="relative z-10 flex items-center gap-2">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-accent/30 bg-accent-soft text-accent breathe">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-purple/30 bg-purple/10 text-purple breathe">
           <ShieldCheck className="h-4 w-4" aria-hidden />
         </span>
         <div>
@@ -37,7 +37,7 @@ export function AgentCapabilitySummary({ settings }: { settings: AgentSettings }
 
       <div className="relative z-10 mt-4 grid grid-cols-2 gap-2">
         <div className="rounded-lg border border-line bg-white/[0.02] p-2.5 text-center">
-          <p className="t-kpi text-xl text-accent">{enabled}</p>
+          <p className="t-kpi text-xl text-purple">{enabled}</p>
           <p className="mt-0.5 text-[10px] text-low">habilitadas</p>
         </div>
         <div className="rounded-lg border border-line bg-white/[0.02] p-2.5 text-center">

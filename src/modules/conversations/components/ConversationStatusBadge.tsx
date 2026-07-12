@@ -4,7 +4,8 @@ import type { ConversationStatus } from "../types";
 
 const TONE: Readonly<Record<ConversationStatus, BadgeTone>> = {
   new: "warning",
-  ai_active: "accent",
+  // IA ativa é verde (semântica de sucesso/operação saudável), não o acento cian.
+  ai_active: "success",
   waiting_customer: "neutral",
   waiting_human: "danger",
   human_active: "info",

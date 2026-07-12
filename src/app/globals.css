@@ -2,49 +2,51 @@
 
 /*
  * Sistema visual enterprise (dark premium, atmosfera de IA).
- * Base grafite/verde-petróleo — mais clara e rica que o quase-preto anterior;
- * superfícies em camadas, off-white tingido, acento verde-teal seletivo,
- * profundidade em cinco níveis e motion ambiental sutil.
+ * Base grafite/azul petróleo — carvão frio, sem preto puro dominante.
+ * Acento de INTERAÇÃO é ciano tecnológico (--color-accent); verde (--color-ok)
+ * é reservado a sucesso/disponibilidade/IA ativa; violeta (--color-purple) a
+ * automação/inteligência; nenhuma cor domina a interface inteira.
+ * Cinco níveis de profundidade e motion ambiental sutil (aurora + malha de IA).
  */
 @theme {
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-  /* Superfícies (Nível 0 → 4) — grafite com tom verde-petróleo */
-  --color-app: #0a1113;
-  --color-raised: #0d1518;
-  --color-surface-1: #10191c;
-  --color-surface-2: #152025;
-  --color-surface-3: #19252a;
-  --color-surface-active: #223137;
-  --color-card-hover: #1e2c31;
-  --color-field: #111b1f;
+  /* Superfícies (Nível 0 → 4) — grafite azulado profundo (carvão/azul petróleo) */
+  --color-app: #0a0f14;
+  --color-raised: #0d131a;
+  --color-surface-1: #10161d;
+  --color-surface-2: #141c24;
+  --color-surface-3: #18222b;
+  --color-surface-active: #202d38;
+  --color-card-hover: #1d2833;
+  --color-field: #0f1620;
 
-  /* Bordas — sutis, levemente esverdeadas, nunca gritantes */
-  --color-subtle: rgba(205, 231, 221, 0.07);
-  --color-line: rgba(205, 231, 221, 0.11);
-  --color-strong: rgba(205, 231, 221, 0.17);
+  /* Bordas — sutis, frias (azul-acinzentado), nunca gritantes */
+  --color-subtle: rgba(210, 224, 238, 0.07);
+  --color-line: rgba(210, 224, 238, 0.11);
+  --color-strong: rgba(210, 224, 238, 0.17);
 
-  /* Texto — off-white levemente quente, brilho decrescente */
-  --color-hi: rgba(244, 249, 247, 0.96);
-  --color-mid: rgba(219, 231, 226, 0.75);
-  --color-low: rgba(196, 210, 204, 0.53);
-  --color-dim: rgba(182, 196, 190, 0.34);
+  /* Texto — off-white frio, brilho decrescente */
+  --color-hi: rgba(240, 246, 251, 0.96);
+  --color-mid: rgba(210, 222, 235, 0.74);
+  --color-low: rgba(188, 202, 218, 0.52);
+  --color-dim: rgba(170, 185, 202, 0.34);
 
-  /* Acento primário (verde-teal refinado, não neon) */
-  --color-accent: #72d6ad;
-  --color-accent-hi: #8be4bf;
-  --color-accent-soft: rgba(114, 214, 173, 0.12);
+  /* Acento primário de INTERAÇÃO — ciano tecnológico (não verde) */
+  --color-accent: #4ec5e0;
+  --color-accent-hi: #77d7ec;
+  --color-accent-soft: rgba(78, 197, 224, 0.13);
 
-  /* Apoios cromáticos (papéis definidos, uso comedido) */
-  --color-support: #65c9d3;
+  /* Apoios cromáticos com papéis definidos */
+  --color-support: #8ea6ff;
   --color-purple: #ae9df4;
 
-  /* Estados semânticos */
-  --color-ok: #72d6ad;
+  /* Estados semânticos — verde só para sucesso/IA/disponibilidade */
+  --color-ok: #5fd0a2;
   --color-warn: #e5b95d;
   --color-bad: #e67771;
-  --color-info: #7ea7ff;
+  --color-info: #8098ff;
 }
 
 :root {
@@ -58,8 +60,8 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.045);
   --shadow-high: 0 24px 60px rgba(0, 0, 0, 0.34), 0 10px 26px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  --glow-accent: 0 0 0 1px rgba(114, 214, 173, 0.16),
-    0 12px 38px -14px rgba(114, 214, 173, 0.3);
+  --glow-accent: 0 0 0 1px rgba(78,197,224, 0.16),
+    0 12px 38px -14px rgba(78,197,224, 0.3);
 
   /* Motion */
   --motion-fast: 120ms;
@@ -112,17 +114,12 @@ body {
 
   /* Base do canvas ambiental (o movimento vive em <AmbientBackground>). */
   .ambient-base {
-    background: linear-gradient(
-      150deg,
-      #0b1417 0%,
-      #101a1e 48%,
-      #0a1316 100%
-    );
+    background: linear-gradient(150deg, #0b1119 0%, #0e1620 48%, #0a0f16 100%);
   }
   /* Grade técnica quase imperceptível, esmaecida nas bordas. */
   .tech-grid {
     background-image: radial-gradient(
-      rgba(205, 231, 221, 0.05) 1px,
+      rgba(210,224,238, 0.05) 1px,
       transparent 1.4px
     );
     background-size: 46px 46px;
@@ -196,30 +193,30 @@ body {
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
   }
   .field:focus {
-    border-color: rgba(114, 214, 173, 0.5);
+    border-color: rgba(78,197,224, 0.5);
     box-shadow:
       inset 0 1px 2px rgba(0, 0, 0, 0.3),
-      0 0 0 1px rgba(114, 214, 173, 0.35);
+      0 0 0 1px rgba(78,197,224, 0.35);
     outline: none;
   }
 
   /* Barra de rolagem discreta para áreas operacionais */
   .scroll-slim {
     scrollbar-width: thin;
-    scrollbar-color: rgba(205, 231, 221, 0.12) transparent;
+    scrollbar-color: rgba(210,224,238, 0.12) transparent;
   }
   .scroll-slim::-webkit-scrollbar {
     width: 10px;
     height: 10px;
   }
   .scroll-slim::-webkit-scrollbar-thumb {
-    background: rgba(205, 231, 221, 0.1);
+    background: rgba(210,224,238, 0.1);
     border-radius: 9px;
     border: 2px solid transparent;
     background-clip: padding-box;
   }
   .scroll-slim::-webkit-scrollbar-thumb:hover {
-    background: rgba(205, 231, 221, 0.18);
+    background: rgba(210,224,238, 0.18);
     background-clip: padding-box;
   }
 
@@ -337,13 +334,13 @@ body {
 
 @keyframes pulse-ring {
   0% {
-    box-shadow: 0 0 0 0 rgba(114, 214, 173, 0.35);
+    box-shadow: 0 0 0 0 rgba(78,197,224, 0.35);
   }
   70% {
-    box-shadow: 0 0 0 7px rgba(114, 214, 173, 0);
+    box-shadow: 0 0 0 7px rgba(78,197,224, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(114, 214, 173, 0);
+    box-shadow: 0 0 0 0 rgba(78,197,224, 0);
   }
 }
 

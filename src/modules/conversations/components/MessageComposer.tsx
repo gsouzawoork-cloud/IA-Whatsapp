@@ -33,7 +33,7 @@ export function MessageComposer({
         <p className="mb-2 flex items-center gap-1.5 px-1 text-[11px] text-low">
           {aiActive ? (
             <>
-              <Bot className="h-3 w-3 text-accent" aria-hidden />
+              <Bot className="h-3 w-3 text-ok" aria-hidden />
               IA ativa nesta conversa — enviar manualmente registra sua intervenção.
             </>
           ) : (

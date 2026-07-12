@@ -34,7 +34,7 @@ export function Sidebar() {
       {/* Cápsula da empresa conectada (identidade distinta da plataforma). */}
       <div className="px-3">
         <div className="flex items-center gap-2.5 rounded-xl border border-line bg-white/[0.03] px-3 py-2.5 elev-low">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-b from-accent to-emerald-600 text-xs font-extrabold text-[#06231a] shadow-[inset_0_1px_0_rgba(255,255,255,0.25)]">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-b from-accent to-info text-xs font-extrabold text-[#052733] shadow-[inset_0_1px_0_rgba(255,255,255,0.25)]">
             {business.monogram}
           </span>
           <div className="min-w-0 flex-1">
@@ -67,7 +67,7 @@ export function Sidebar() {
             >
               {active ? (
                 <span
-                  className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_8px_rgba(114,214,173,0.8)]"
+                  className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-accent shadow-[0_0_8px_rgba(78,197,224,0.8)]"
                   aria-hidden
                 />
               ) : null}
