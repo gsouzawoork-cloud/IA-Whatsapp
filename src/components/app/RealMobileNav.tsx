@@ -1,8 +1,34 @@
 "use client";
 
 import Link from "next/link";
+import {
+  Bot,
+  Building2,
+  ChefHat,
+  LayoutDashboard,
+  MapPin,
+  MessagesSquare,
+  Package,
+  ShoppingBag,
+  Store,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
-import type { AppNavItem } from "@/core/navigation/app-nav";
+import type { NavigationIconKey, NavigationItem } from "@/core/navigation/app-nav";
+
+const ICONS: Record<NavigationIconKey, LucideIcon> = {
+  dashboard: LayoutDashboard,
+  messages: MessagesSquare,
+  orders: ShoppingBag,
+  queue: ChefHat,
+  products: Package,
+  delivery: MapPin,
+  customers: Users,
+  agent: Bot,
+  company: Building2,
+  units: Store,
+};
 
 function isActive(pathname: string, href: string): boolean {
   if (href === "/app") return pathname === "/app";
@@ -10,7 +36,7 @@ function isActive(pathname: string, href: string): boolean {
 }
 
 /** Navegação inferior (celular) da aplicação real: itens primários por módulo. */
-export function RealMobileNav({ items }: { items: readonly AppNavItem[] }) {
+export function RealMobileNav({ items }: { items: readonly NavigationItem[] }) {
   const pathname = usePathname();
   const primary = items.filter((i) => i.mobilePrimary).slice(0, 5);
 
@@ -21,7 +47,7 @@ export function RealMobileNav({ items }: { items: readonly AppNavItem[] }) {
     >
       {primary.map((item) => {
         const active = isActive(pathname, item.href);
-        const Icon = item.icon;
+        const Icon = ICONS[item.iconKey];
         return (
           <Link
             key={item.href}

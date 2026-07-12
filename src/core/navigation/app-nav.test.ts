@@ -2,6 +2,22 @@ import { describe, expect, it } from "vitest";
 import { navItemsForModules } from "./app-nav";
 
 describe("navegação derivada dos módulos", () => {
+  it("expõe itens serializáveis para o shell do app real", () => {
+    const items = navItemsForModules([
+      "conversations",
+      "orders",
+      "preparation_queue",
+      "catalog",
+      "customers",
+      "agent_configuration",
+      "delivery",
+    ]);
+
+    expect(items.some((item) => item.iconKey === "dashboard")).toBe(true);
+    expect(items.every((item) => typeof item.iconKey === "string")).toBe(true);
+    expect(items.every((item) => "icon" in item)).toBe(false);
+  });
+
   it("empresa de serviços não vê produtos, entrega nem fila", () => {
     const items = navItemsForModules(["conversations", "customers", "agent_configuration"]);
     const hrefs = items.map((i) => i.href);

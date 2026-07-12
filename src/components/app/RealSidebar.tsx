@@ -1,13 +1,39 @@
 "use client";
 
 import Link from "next/link";
+import {
+  Bot,
+  Building2,
+  ChefHat,
+  LayoutDashboard,
+  MapPin,
+  MessagesSquare,
+  Package,
+  ShoppingBag,
+  Store,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
 import { usePathname } from "next/navigation";
-import type { AppNavItem } from "@/core/navigation/app-nav";
+import type { NavigationIconKey, NavigationItem } from "@/core/navigation/app-nav";
 import { ROLE_LABELS } from "@/core/auth/roles";
 import type { Role } from "@/core/auth/roles";
 import { PlatformBrand } from "@/components/layout/PlatformBrand";
 import { OrgSwitcher } from "./OrgSwitcher";
 import { SignOutButton } from "./SignOutButton";
+
+const ICONS: Record<NavigationIconKey, LucideIcon> = {
+  dashboard: LayoutDashboard,
+  messages: MessagesSquare,
+  orders: ShoppingBag,
+  queue: ChefHat,
+  products: Package,
+  delivery: MapPin,
+  customers: Users,
+  agent: Bot,
+  company: Building2,
+  units: Store,
+};
 
 function isActive(pathname: string, href: string): boolean {
   if (href === "/app") {
@@ -17,7 +43,7 @@ function isActive(pathname: string, href: string): boolean {
 }
 
 interface Props {
-  items: readonly AppNavItem[];
+  items: readonly NavigationItem[];
   organizations: readonly { id: string; displayName: string }[];
   activeOrgId: string;
   units: readonly { id: string; name: string }[];
@@ -49,7 +75,7 @@ export function RealSidebar(props: Props) {
         <p className="t-eyebrow px-2 pb-1.5 text-[10px] uppercase">Operação</p>
         {props.items.map((item) => {
           const active = isActive(pathname, item.href);
-          const Icon = item.icon;
+          const Icon = ICONS[item.iconKey];
           return (
             <Link
               key={item.href}

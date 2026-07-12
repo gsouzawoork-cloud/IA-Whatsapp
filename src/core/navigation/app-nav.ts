@@ -7,48 +7,57 @@
  * real (RLS + permissões).
  */
 
-import {
-  Bot,
-  Building2,
-  ChefHat,
-  LayoutDashboard,
-  MapPin,
-  MessagesSquare,
-  Package,
-  ShoppingBag,
-  Store,
-  Users,
-  type LucideIcon,
-} from "lucide-react";
 import type { AppModule } from "@/lib/supabase/database.types";
 
-export interface AppNavItem {
+export type NavigationIconKey =
+  | "dashboard"
+  | "messages"
+  | "orders"
+  | "queue"
+  | "products"
+  | "delivery"
+  | "customers"
+  | "agent"
+  | "company"
+  | "units";
+
+export interface NavigationItem {
   readonly href: string;
   readonly label: string;
-  readonly icon: LucideIcon;
-  /** Módulo exigido; ausente = sempre visível (núcleo). */
-  readonly module?: AppModule;
-  readonly mobilePrimary: boolean;
+  readonly iconKey: NavigationIconKey;
+  readonly mobilePrimary?: boolean;
 }
 
-const ALL_ITEMS: readonly AppNavItem[] = [
-  { href: "/app", label: "Visão geral", icon: LayoutDashboard, mobilePrimary: true },
-  { href: "/app/atendimento", label: "Atendimento", icon: MessagesSquare, module: "conversations", mobilePrimary: true },
-  { href: "/app/pedidos", label: "Pedidos", icon: ShoppingBag, module: "orders", mobilePrimary: true },
-  { href: "/app/fila", label: "Fila de preparo", icon: ChefHat, module: "preparation_queue", mobilePrimary: false },
-  { href: "/app/produtos", label: "Produtos", icon: Package, module: "catalog", mobilePrimary: false },
-  { href: "/app/entrega", label: "Entrega", icon: MapPin, module: "delivery", mobilePrimary: false },
-  { href: "/app/clientes", label: "Clientes", icon: Users, module: "customers", mobilePrimary: false },
-  { href: "/app/configuracoes/ia", label: "Configuração da IA", icon: Bot, module: "agent_configuration", mobilePrimary: false },
-  { href: "/app/configuracoes/empresa", label: "Empresa", icon: Building2, mobilePrimary: false },
-  { href: "/app/configuracoes/unidades", label: "Unidades", icon: Store, mobilePrimary: false },
+type NavigationDefinition = NavigationItem & {
+  /** Módulo exigido; ausente = sempre visível (núcleo). */
+  readonly module?: AppModule;
+};
+
+export type AppNavItem = NavigationItem;
+
+const ALL_ITEMS: readonly NavigationDefinition[] = [
+  { href: "/app", label: "Visão geral", iconKey: "dashboard", mobilePrimary: true },
+  { href: "/app/atendimento", label: "Atendimento", iconKey: "messages", module: "conversations", mobilePrimary: true },
+  { href: "/app/pedidos", label: "Pedidos", iconKey: "orders", module: "orders", mobilePrimary: true },
+  { href: "/app/fila", label: "Fila de preparo", iconKey: "queue", module: "preparation_queue", mobilePrimary: false },
+  { href: "/app/produtos", label: "Produtos", iconKey: "products", module: "catalog", mobilePrimary: false },
+  { href: "/app/entrega", label: "Entrega", iconKey: "delivery", module: "delivery", mobilePrimary: false },
+  { href: "/app/clientes", label: "Clientes", iconKey: "customers", module: "customers", mobilePrimary: false },
+  { href: "/app/configuracoes/ia", label: "Configuração da IA", iconKey: "agent", module: "agent_configuration", mobilePrimary: false },
+  { href: "/app/configuracoes/empresa", label: "Empresa", iconKey: "company", mobilePrimary: false },
+  { href: "/app/configuracoes/unidades", label: "Unidades", iconKey: "units", mobilePrimary: false },
 ];
 
 /** Itens de navegação visíveis para o conjunto de módulos habilitados. */
 export function navItemsForModules(
   enabledModules: readonly AppModule[],
-): readonly AppNavItem[] {
+): readonly NavigationItem[] {
   return ALL_ITEMS.filter(
     (item) => item.module === undefined || enabledModules.includes(item.module),
-  );
+  ).map(({ href, label, iconKey, mobilePrimary }) => ({
+    href,
+    label,
+    iconKey,
+    mobilePrimary,
+  }));
 }
