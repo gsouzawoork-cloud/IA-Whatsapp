@@ -13,6 +13,8 @@ const developmentOrigins = [
 ].filter((origin): origin is string => Boolean(origin));
 
 const nextConfig: NextConfig = {
+  devIndicators: false,
+
   allowedDevOrigins: isDevelopment ? developmentOrigins : [],
 
   experimental: {
