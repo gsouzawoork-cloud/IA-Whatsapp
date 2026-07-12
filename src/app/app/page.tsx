@@ -17,6 +17,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { SectionCard } from "@/components/ui/SectionCard";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { Avatar } from "@/components/ui/Avatar";
+import { AiAmbient } from "@/components/ui/AiAmbient";
 import { formatCurrency, formatDuration, formatElapsed } from "@/lib/format";
 import { useDemo } from "@/modules/demo/state/DemoProvider";
 import {
@@ -50,33 +51,42 @@ export default function OverviewPage() {
   ];
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6 p-4 lg:p-8">
-      <PageHeader
-        eyebrow={`Operação · ${state.data.business.name}`}
-        title="Visão geral"
-        description="Panorama do momento com dados simulados, atualizado em tempo real."
-        actions={
-          <div className="hidden gap-2 sm:flex">
+    <div className="animate-rise mx-auto max-w-7xl space-y-6 p-4 lg:p-8">
+      <div className="panel elev-low relative overflow-hidden rounded-2xl p-5 lg:p-6">
+        <AiAmbient className="opacity-70" />
+        <div className="relative z-10 flex flex-wrap items-start justify-between gap-3">
+          <PageHeader
+            eyebrow={`Operação · ${state.data.business.name}`}
+            title="Sala de comando"
+            description="Panorama da operação atendida por IA, atualizado em tempo real."
+          />
+          <div className="flex items-center gap-2">
+            <span className="hidden items-center gap-2 rounded-lg border border-accent/25 bg-accent-soft px-2.5 py-1.5 text-xs font-semibold text-accent sm:inline-flex">
+              <span className="pulse-dot h-2 w-2 rounded-full bg-accent" aria-hidden />
+              Ao vivo
+            </span>
             <Link
               href="/app/atendimento"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-strong bg-white/[0.04] px-3 py-2 text-sm font-semibold text-hi transition-colors hover:bg-white/[0.08]"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-strong bg-white/[0.05] px-3 py-2 text-sm font-semibold text-hi transition-all duration-150 hover:-translate-y-px hover:bg-white/[0.09]"
             >
               Atendimento
               <ArrowRight className="h-4 w-4 text-accent" aria-hidden />
             </Link>
           </div>
-        }
-      />
+        </div>
+      </div>
 
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-6">
-        <MetricCard
-          label="Precisam de atenção"
-          value={String(metrics.conversationsNeedingAttention).padStart(2, "0")}
-          hint="Nova(s) + aguardando humano"
-          icon={AlertCircle}
-          tone="attention"
-          highlight={metrics.conversationsNeedingAttention > 0}
-        />
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="col-span-2 lg:col-span-1 xl:col-span-2">
+          <MetricCard
+            label="Precisam de atenção"
+            value={String(metrics.conversationsNeedingAttention).padStart(2, "0")}
+            hint="Nova(s) + aguardando humano"
+            icon={AlertCircle}
+            tone="attention"
+            highlight={metrics.conversationsNeedingAttention > 0}
+          />
+        </div>
         <MetricCard
           label="IA atendendo"
           value={metrics.conversationsWithAI}

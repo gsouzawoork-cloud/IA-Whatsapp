@@ -212,3 +212,32 @@ Status.
 - **Preservação:** rotas, estado, reducers, seletores, regras de domínio, dados
   simulados e os 50 testes permanecem intactos — nenhuma lógica foi alterada.
 - **Status:** aceita.
+
+## ADR-017 — Elevação para experiência enterprise de IA (Fase 1)
+
+- **Contexto:** o dark premium ainda lembrava um dashboard escuro genérico — pouca
+  atmosfera, elevação discreta e ausência de motion. Objetivo: percepção de produto
+  enterprise de IA, sem alterar lógica nem adicionar dependências pesadas.
+- **Atmosfera ambiental:** `.app-canvas` combina base grafite verde-petróleo,
+  halos radiais (verde + teal), grade de pontos técnica quase imperceptível e
+  vinheta — tudo em camadas de background CSS estáticas (sem custo de runtime).
+- **Superfícies tingidas:** tokens de superfície ganharam leve tom verde-petróleo
+  (fim do "preto chapado"); cinco níveis de profundidade e novo `.card-object`
+  (Nível 3) além de `.panel`/`.panel-priority`.
+- **Sombras:** cinco níveis (`--shadow-ambient/low/medium/high` + `--glow-accent`),
+  com brilho interno; aplicadas por hierarquia, não uniformemente.
+- **Cromática:** acento `#69D9A4` (verde-teal) com papéis definidos + apoios teal
+  (`--color-support`) e roxo (`--color-purple`); off-white levemente quente.
+- **Motion:** tokens (`--motion-*`, `--ease-premium`) e utilitários `animate-rise`
+  (entrada de página), `breathe` (IA viva) e `pulse-dot`/`pulse-ring` (operação ao
+  vivo); apenas ~3 elementos com animação infinita, animando só `opacity`/`box-shadow`;
+  `prefers-reduced-motion` desativa todas as animações.
+- **Identidade de IA:** componente `AiAmbient` (SVG inline leve, malha de nós + halo,
+  `aria-hidden`) no header da visão geral, no estado vazio do atendimento e no painel
+  de autonomia. Sem WebGL/Canvas/imagens.
+- **Telas:** visão geral vira "sala de comando" (header ambiental + KPI de atenção
+  dominante); estado vazio do atendimento premium com atalho de prioridade; painel de
+  autonomia da IA imersivo com resumo (habilitadas/bloqueadas); afford. de ação nas
+  tabelas (Abrir/Perfil como pílula com ícone).
+- **Performance/deps:** nenhuma dependência nova; apenas CSS, SVG inline e Tailwind.
+- **Status:** aceita.

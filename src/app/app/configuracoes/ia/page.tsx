@@ -71,7 +71,7 @@ export default function AgentConfigPage() {
   const dirty = JSON.stringify(form) !== JSON.stringify(state.data.agentSettings);
 
   return (
-    <div className="mx-auto max-w-6xl space-y-5 p-4 lg:p-8">
+    <div className="animate-rise mx-auto max-w-6xl space-y-5 p-4 lg:p-8">
       <PageHeader
         eyebrow="Núcleo · Configuração da IA"
         title="Configuração da IA"

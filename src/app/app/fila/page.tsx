@@ -21,7 +21,7 @@ export default function FilaPage() {
   const base = state.data.business.defaultPreparationMinutes;
 
   return (
-    <div className="mx-auto max-w-7xl space-y-4 p-4 lg:p-8">
+    <div className="animate-rise mx-auto max-w-7xl space-y-4 p-4 lg:p-8">
       <PageHeader
         eyebrow="Módulo · Fila de preparo"
         title="Fila de preparo"

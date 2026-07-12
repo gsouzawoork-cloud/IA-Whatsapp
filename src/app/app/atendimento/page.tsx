@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MessagesSquare } from "lucide-react";
-import { EmptyState } from "@/components/ui/EmptyState";
+import { PanelRight } from "lucide-react";
 import { Drawer } from "@/components/ui/Drawer";
 import { useDemo } from "@/modules/demo/state/DemoProvider";
 import {
@@ -13,6 +12,7 @@ import {
 import { ConversationList } from "@/modules/conversations/components/ConversationList";
 import { ConversationView } from "@/modules/conversations/components/ConversationView";
 import { ContextPanel } from "@/modules/conversations/components/ContextPanel";
+import { WorkspaceEmptyState } from "@/modules/conversations/components/WorkspaceEmptyState";
 
 export default function AtendimentoPage() {
   const { state, actions } = useDemo();
@@ -41,21 +41,20 @@ export default function AtendimentoPage() {
               messages={messages}
             />
           ) : (
-            <div className="flex h-full items-center justify-center bg-raised/50 p-8">
-              <EmptyState
-                icon={MessagesSquare}
-                title="Selecione uma conversa"
-                description="Escolha uma conversa na lista para ver as mensagens e o contexto do cliente."
-              />
-            </div>
+            <WorkspaceEmptyState />
           )}
         </div>
         <div className="border-l border-subtle">
           {conversation ? (
             <ContextPanel conversation={conversation} />
           ) : (
-            <div className="flex h-full items-center justify-center bg-surface-1/40 p-6 text-center text-sm text-low">
-              O contexto do cliente aparece aqui.
+            <div className="flex h-full flex-col items-center justify-center gap-3 bg-surface-1/40 p-6 text-center">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-white/[0.03] text-low">
+                <PanelRight className="h-5 w-5" aria-hidden />
+              </span>
+              <p className="text-sm text-low">
+                O contexto do cliente — dados, pedido e histórico — aparece aqui.
+              </p>
             </div>
           )}
         </div>

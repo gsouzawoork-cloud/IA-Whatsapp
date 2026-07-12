@@ -63,7 +63,7 @@ export default function ProdutosPage() {
   );
 
   return (
-    <div className="mx-auto max-w-5xl space-y-4 p-4 lg:p-8">
+    <div className="animate-rise mx-auto max-w-5xl space-y-4 p-4 lg:p-8">
       <PageHeader
         eyebrow="Módulo · Catálogo"
         title="Produtos e disponibilidade"

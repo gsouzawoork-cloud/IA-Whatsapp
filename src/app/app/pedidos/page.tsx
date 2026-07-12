@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ShoppingBag } from "lucide-react";
+import { ArrowUpRight, ShoppingBag } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { FilterTabs, type FilterOption } from "@/components/ui/FilterTabs";
@@ -68,7 +68,7 @@ export default function PedidosPage() {
   const selected = selectedId ? state.data.orders.find((o) => o.id === selectedId) : undefined;
 
   return (
-    <div className="mx-auto max-w-6xl space-y-4 p-4 lg:p-8">
+    <div className="animate-rise mx-auto max-w-6xl space-y-4 p-4 lg:p-8">
       <PageHeader
         eyebrow="Módulo · Pedidos"
         title="Pedidos"
@@ -117,7 +117,7 @@ export default function PedidosPage() {
                     <tr
                       key={order.id}
                       onClick={() => setSelectedId(order.id)}
-                      className="cursor-pointer border-b border-subtle transition-colors last:border-0 hover:bg-white/[0.03]"
+                      className="group cursor-pointer border-b border-subtle transition-colors last:border-0 hover:bg-white/[0.03]"
                     >
                       <td className="num px-4 py-3 font-bold text-hi">{order.number}</td>
                       <td className="px-4 py-3">
@@ -138,7 +138,10 @@ export default function PedidosPage() {
                       </td>
                       <td className="px-4 py-3 text-xs text-dim">{formatElapsed(order.createdAt)}</td>
                       <td className="px-4 py-3 text-right">
-                        <span className="text-xs font-semibold text-accent">Abrir</span>
+                        <span className="inline-flex items-center gap-1 rounded-md border border-line bg-white/[0.03] px-2 py-1 text-xs font-semibold text-mid transition-colors group-hover:border-accent/30 group-hover:text-accent">
+                          Abrir
+                          <ArrowUpRight className="h-3 w-3" aria-hidden />
+                        </span>
                       </td>
                     </tr>
                   );

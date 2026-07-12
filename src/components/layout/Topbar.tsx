@@ -25,7 +25,8 @@ export function Topbar() {
 
       {/* Desktop: pulso da operação. */}
       <div className="hidden items-center gap-2 lg:flex">
-        <span className="inline-flex items-center gap-2 rounded-lg border border-line bg-white/[0.03] px-3 py-1.5 text-xs text-mid">
+        <span className="inline-flex items-center gap-2 rounded-lg border border-line bg-white/[0.03] px-3 py-1.5 text-xs text-mid elev-low">
+          <span className="pulse-dot h-2 w-2 rounded-full bg-accent" aria-hidden />
           <Activity className="h-3.5 w-3.5 text-accent" aria-hidden />
           Operação ao vivo
           <span className="mx-1 h-3 w-px bg-strong" aria-hidden />

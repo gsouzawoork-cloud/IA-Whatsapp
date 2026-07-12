@@ -84,7 +84,7 @@ export function ConversationList() {
                 >
                   {selected ? (
                     <span
-                      className="absolute inset-y-3 left-0 w-0.5 rounded-full bg-accent shadow-[0_0_8px_rgba(126,224,181,0.8)]"
+                      className="absolute inset-y-3 left-0 w-0.5 rounded-full bg-accent shadow-[0_0_8px_rgba(105,217,164,0.8)]"
                       aria-hidden
                     />
                   ) : null}
