@@ -37,7 +37,7 @@ export function Topbar() {
 
       <div className="flex items-center gap-2">
         <Link
-          href="/app/atendimento"
+          href="/demo/atendimento"
           className="inline-flex items-center gap-1.5 rounded-lg border border-strong bg-white/[0.04] px-2.5 py-1.5 text-xs font-semibold text-hi transition-colors hover:bg-white/[0.08]"
         >
           <MessagesSquare className="h-3.5 w-3.5 text-accent" aria-hidden />

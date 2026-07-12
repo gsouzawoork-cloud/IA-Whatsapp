@@ -191,7 +191,7 @@ export default function PedidosPage() {
         headerExtra={
           selected?.conversationId ? (
             <Link
-              href="/app/atendimento"
+              href="/demo/atendimento"
               onClick={() =>
                 selected.conversationId && actions.selectConversation(selected.conversationId)
               }

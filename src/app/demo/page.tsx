@@ -77,7 +77,7 @@ export default function OverviewPage() {
               Monitorando
             </span>
             <Link
-              href="/app/atendimento"
+              href="/demo/atendimento"
               className="inline-flex items-center gap-1.5 rounded-lg border border-strong bg-white/[0.05] px-3 py-2 text-sm font-semibold text-hi transition-all duration-150 hover:-translate-y-px hover:bg-white/[0.09]"
             >
               Atendimento
@@ -157,7 +157,7 @@ export default function OverviewPage() {
           title="Conversas prioritárias"
           description="Ordenadas por urgência"
           action={
-            <Link href="/app/atendimento" className="text-xs font-semibold text-accent hover:underline">
+            <Link href="/demo/atendimento" className="text-xs font-semibold text-accent hover:underline">
               Ver todas
             </Link>
           }
@@ -174,7 +174,7 @@ export default function OverviewPage() {
                 return (
                   <li key={conversation.id}>
                     <Link
-                      href="/app/atendimento"
+                      href="/demo/atendimento"
                       onClick={() => actions.selectConversation(conversation.id)}
                       className="group flex items-center gap-3 rounded-lg border border-transparent px-2 py-2 transition-colors hover:border-line hover:bg-white/[0.03]"
                     >
@@ -205,7 +205,7 @@ export default function OverviewPage() {
         <SectionCard
           title="Estado da fila"
           action={
-            <Link href="/app/fila" className="inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline">
+            <Link href="/demo/fila" className="inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline">
               <ChefHat className="h-3.5 w-3.5" aria-hidden />
               Abrir fila
             </Link>
@@ -234,7 +234,7 @@ export default function OverviewPage() {
               return (
                 <li key={order.id}>
                   <Link
-                    href="/app/pedidos"
+                    href="/demo/pedidos"
                     className="group flex items-center gap-3 rounded-lg px-2 py-2 transition-colors hover:bg-white/[0.03]"
                   >
                     <span className="num text-sm font-bold text-hi">{order.number}</span>
@@ -267,7 +267,7 @@ export default function OverviewPage() {
                   <span className="text-xs text-low">
                     {product.availability.mode === "quantity" ? "sem estoque" : "indisponível"}
                   </span>
-                  <Link href="/app/produtos" className="text-xs font-semibold text-accent hover:underline">
+                  <Link href="/demo/produtos" className="text-xs font-semibold text-accent hover:underline">
                     Corrigir
                   </Link>
                 </li>

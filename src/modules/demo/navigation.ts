@@ -26,42 +26,42 @@ export interface NavItem {
  * de módulos desativados não seriam incluídos aqui (ver `DEMO_ENABLED_MODULES`).
  */
 export const NAV_ITEMS: readonly NavItem[] = [
-  { href: "/app", label: "Visão geral", icon: LayoutDashboard, mobilePrimary: true },
+  { href: "/demo", label: "Visão geral", icon: LayoutDashboard, mobilePrimary: true },
   {
-    href: "/app/atendimento",
+    href: "/demo/atendimento",
     label: "Atendimento",
     icon: MessagesSquare,
     mobilePrimary: true,
   },
   {
-    href: "/app/pedidos",
+    href: "/demo/pedidos",
     label: "Pedidos",
     icon: ShoppingBag,
     module: "orders",
     mobilePrimary: true,
   },
   {
-    href: "/app/fila",
+    href: "/demo/fila",
     label: "Fila de preparo",
     icon: ChefHat,
     module: "preparation",
     mobilePrimary: true,
   },
   {
-    href: "/app/produtos",
+    href: "/demo/produtos",
     label: "Produtos",
     icon: Pizza,
     module: "availability",
     mobilePrimary: false,
   },
   {
-    href: "/app/clientes",
+    href: "/demo/clientes",
     label: "Clientes",
     icon: Users,
     mobilePrimary: false,
   },
   {
-    href: "/app/configuracoes/ia",
+    href: "/demo/configuracoes/ia",
     label: "Configuração da IA",
     icon: Bot,
     mobilePrimary: false,

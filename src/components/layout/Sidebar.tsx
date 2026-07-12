@@ -8,10 +8,10 @@ import { useDemo } from "@/modules/demo/state/DemoProvider";
 import { DemoBanner } from "./DemoBanner";
 import { PlatformBrand } from "./PlatformBrand";
 
-/** Ativo quando a rota corresponde (evita marcar "/app" em subrotas). */
+/** Ativo quando a rota corresponde (evita marcar "/demo" em subrotas). */
 function isActive(pathname: string, href: string): boolean {
-  if (href === "/app") {
-    return pathname === "/app";
+  if (href === "/demo") {
+    return pathname === "/demo";
   }
   return pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -53,7 +53,7 @@ export function Sidebar() {
         {NAV_ITEMS.map((item) => {
           const active = isActive(pathname, item.href);
           const Icon = item.icon;
-          const showAttention = item.href === "/app/atendimento" && attention > 0;
+          const showAttention = item.href === "/demo/atendimento" && attention > 0;
           return (
             <Link
               key={item.href}
